@@ -60,6 +60,7 @@ message PullResponseSui {
   bytes txn_idx = 28;
   bytes cluster_idx = 29;
   bytes sig = 30;
+  bytes pair_mask = 31;
 }
 
 message PullResponseAptos {
@@ -98,4 +99,5 @@ message PullResponseAptos {
   bytes txn_idx = 28;
   bytes cluster_idx = 29;
   bytes sig = 30;
+  bytes pair_mask = 31;
 }
