@@ -44,7 +44,7 @@ Before using the library, make sure to set up the configuration in the main.js f
 4. Configure the RPC URL for the desired blockchain network:
 
    ```bash
-   const provider = new aptos.Provider(aptos.Network.LOCAL);
+   const provider = new aptos.Provider({ fullnodeUrl: "<RPC URL>" });
    ```
 
 # Customization

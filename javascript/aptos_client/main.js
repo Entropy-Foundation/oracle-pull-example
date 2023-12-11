@@ -1,5 +1,5 @@
 const aptos = require("aptos");
-const provider = new aptos.Provider(aptos.Network.LOCAL);
+const provider = new aptos.Provider({ fullnodeUrl: "<RPC URL>" });
 const PullServiceClient = require("./pullServiceClient");
 
 async function main() {
