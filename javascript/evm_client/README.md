@@ -1,4 +1,4 @@
-# Javascript PullServiceClient Readme
+# Javascript PullServiceClient for EVM Readme
 
 This library is designed to interact with a gRPC server for fetching proof data and then using that data to call a smart
 contract on a blockchain network. This readme provides instructions on how to use the library and customize certain
