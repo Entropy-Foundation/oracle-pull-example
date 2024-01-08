@@ -154,6 +154,7 @@ async function callContract(response) {
 
     let clusters=proof_data[0].clustersRaw;
     let pairMask=proof_data[0].pairMask;
+    let pair = 0; 
     let pairId=[]
     let pairPrice=[];
     let pairDecimal=[];
@@ -164,7 +165,7 @@ async function callContract(response) {
 
 
       let scc = web3.eth.abi.decodeParameters(SignedCoherentClusterABI,clusters[i]);
-      let pair = 0; 
+      
       for (let j = 0; j < scc[0].cc.pair.length; ++j) {
           pair += 1;
           if (!pairMask[pair - 1]) {
