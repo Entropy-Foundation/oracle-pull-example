@@ -35,7 +35,7 @@ async function callContract(response) {
 
     const hex = web3.utils.bytesToHex(response.proof_bytes);
 
-    /////////////////////////////////////////////////// Utility code to deserialise the oracle proof bytes ///////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////// Utility code to deserialise the oracle proof bytes (Optional) ///////////////////////////////////////////////////////////////////
 
     const OracleProofABI = require("../../resources/oracleProof..json"); // Interface for the Oracle Proof data
 
@@ -43,13 +43,13 @@ async function callContract(response) {
 
     let proof_data = web3.eth.abi.decodeParameters(OracleProofABI,hex); // Deserialising the Oracle Proof data 
 
-    let clusters=proof_data[0].clustersRaw; // Fatching the raw bytes of the signed pair cluster data
-    let pairMask=proof_data[0].pairMask; // Fetching which pair ids is been requested
+    let clusters = proof_data[0].clustersRaw; // Fatching the raw bytes of the signed pair cluster data
+    let pairMask = proof_data[0].pairMask; // Fetching which pair ids is been requested
     let pair = 0;  // Helps in iterating the vector of pair masking
-    let pairId=[]  // list of all the pair ids requested
-    let pairPrice=[]; // list of prices for the corresponding pair ids  
-    let pairDecimal=[]; // list of pair decimals for the corresponding pair ids
-    let pairTimestamp=[]; // list of pair last updated timestamp for the corresponding pair ids
+    let pairId = []  // list of all the pair ids requested
+    let pairPrice = []; // list of prices for the corresponding pair ids  
+    let pairDecimal = []; // list of pair decimals for the corresponding pair ids
+    let pairTimestamp = []; // list of pair last updated timestamp for the corresponding pair ids
 
 
     for (let i = 0; i < clusters.length; ++i) {
@@ -80,7 +80,7 @@ async function callContract(response) {
     console.log("Pair Timestamp : ", pairTimestamp);
 
 
-    /////////////////////////////////////////////////// End of the utility code to deserialise the oracle proof bytes ////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////// End of the utility code to deserialise the oracle proof bytes (Optional) ////////////////////////////////////////////////////////////////
     
     const txData = contract.methods.GetPairPrice(hex, 0).encodeABI(); // function from you contract eg:GetPairPrice from example-contract.sol
     const gasEstimate = await contract.methods.GetPairPrice(hex, 0).estimateGas({from: "<WALLET ADDRESS>"});
