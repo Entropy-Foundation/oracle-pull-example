@@ -27,15 +27,9 @@ Before using the library, configure the file in example folder:
 
 1. Set the gRPC server address:
     
-    **Mainnets**
-
-    ```bash
-    let address = "grpcs://mainnet-dora.supraoracles.com".to_string();
-   ```
-
    **Testnets**
     ```bash
-    let address = "grpcs://testnet-dora.supraoracles.com".to_string();
+    let address = "grpcs://testnet-dora-2.supra.com".to_string();
    ```
 2. Set the pair indexes as an array:
     ```bash
@@ -74,40 +68,16 @@ following components:
 5. **Transaction Object**: Customize the transaction object as needed:
     ```bash
     let aptos_arg = TransactionPayload::EntryFunction(EntryFunction::new(
-      ModuleId::new(address, Identifier::new(MODULE).unwrap()),
-      Identifier::new(ENTRY).unwrap(),
-      vec![],
-      vec![     
-        bcs::to_bytes(&AccountAddress::from_hex_literal(&payload.dkg_object).unwrap()).unwrap(),
-        bcs::to_bytes(&AccountAddress::from_hex_literal(&payload.oracle_holder_object).unwrap()).unwrap(),
-        payload.vote_smr_block_round,
-        payload.vote_smr_block_timestamp,
-        payload.vote_smr_block_author,
-        payload.vote_smr_block_qc_hash,
-        payload.vote_smr_block_batch_hashes,
-        payload.vote_round,
-        payload.min_batch_protocol,
-        payload.min_batch_txn_hashes,
-        payload.min_txn_cluster_hashes,
-        payload.min_txn_sender,
-        payload.min_txn_protocol,
-        payload.min_txn_tx_sub_type,
-        payload.scc_data_hash,
-        payload.scc_pair,
-        payload.scc_prices,
-        payload.scc_timestamp,
-        payload.scc_decimals,
-        payload.scc_qc,
-        payload.scc_round,
-        payload.scc_id,
-        payload.scc_member_index,
-        payload.scc_committee_index,
-        payload.batch_idx,
-        payload.txn_idx,
-        payload.cluster_idx,
-        payload.sig,
-        payload.pair_mask,
-      ],
+        ModuleId::new(address, Identifier::new(MODULE).unwrap()),
+        Identifier::new(ENTRY).unwrap(),
+        vec![],
+        vec![
+            bcs::to_bytes(
+                &AccountAddress::from_hex_literal(&payload.oracle_holder_object).unwrap(),
+            )
+            .unwrap(),
+            bcs::to_bytes(&payload.bytes_proof).unwrap(),
+        ],
     ));
     ```
 

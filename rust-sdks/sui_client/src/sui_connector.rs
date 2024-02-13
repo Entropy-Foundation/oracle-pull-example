@@ -6,72 +6,24 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 use std::{fmt::Display, future::Future};
 use sui_keys::keystore::{AccountKeystore, InMemKeystore};
-use sui_sdk::json::{MoveTypeLayout, SuiJsonValue};
+use sui_sdk::json::SuiJsonValue;
 use sui_sdk::rpc_types::{SuiTransactionBlockResponse, SuiTransactionBlockResponseOptions};
 use sui_sdk::{SuiClient, SuiClientBuilder};
 use sui_types::base_types::ObjectID;
 use sui_types::base_types::SuiAddress;
+use sui_types::crypto::EncodeDecodeBase64;
 use sui_types::crypto::SuiKeyPair;
+use sui_types::signature::VerifyParams;
 use sui_types::transaction::{Transaction, TransactionData};
 
 const MODULE: &str = "<CONTRACT MODULE>"; // Module name of your contract. Ex. pull_example
 const ENTRY: &str = "<CONTRACT FUNCTION>"; // Module function name of your contract. Ex. get_pair_price
 
 pub async fn invoke_sui_chain(payload: PullResponseSui, sui_connector: SuiConnector) {
-    let vec_u8 = MoveTypeLayout::Vector(Box::new(MoveTypeLayout::U8));
-    let vec_vec_u8 = MoveTypeLayout::Vector(Box::new(MoveTypeLayout::Vector(Box::new(
-        MoveTypeLayout::U8,
-    ))));
-    let vec_vec_vec_u8 = MoveTypeLayout::Vector(Box::new(MoveTypeLayout::Vector(Box::new(
-        MoveTypeLayout::Vector(Box::new(MoveTypeLayout::U8)),
-    ))));
-    let vec_vec_16 = MoveTypeLayout::Vector(Box::new(MoveTypeLayout::Vector(Box::new(
-        MoveTypeLayout::U16,
-    ))));
-    let vec_vec_32 = MoveTypeLayout::Vector(Box::new(MoveTypeLayout::Vector(Box::new(
-        MoveTypeLayout::U32,
-    ))));
-    let vec_vec_128 = MoveTypeLayout::Vector(Box::new(MoveTypeLayout::Vector(Box::new(
-        MoveTypeLayout::U128,
-    ))));
-    let vec_u64 = MoveTypeLayout::Vector(Box::new(MoveTypeLayout::U64));
-
-    let vec_vec_bool = MoveTypeLayout::Vector(Box::new(MoveTypeLayout::Vector(Box::new(
-        MoveTypeLayout::Bool,
-    ))));
-
     let sui_arg = vec![
         SuiJsonValue::from_str(&payload.dkg_object).unwrap(),
         SuiJsonValue::from_str(&payload.oracle_holder_object).unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_vec_u8), &payload.vote_smr_block_round).unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_vec_u8), &payload.vote_smr_block_timestamp).unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_vec_u8), &payload.vote_smr_block_author).unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_vec_u8), &payload.vote_smr_block_qc_hash).unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_vec_vec_u8), &payload.vote_smr_block_batch_hashes)
-            .unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_u64), &payload.vote_round).unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_vec_u8), &payload.min_batch_protocol).unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_vec_vec_u8), &payload.min_batch_txn_hashes).unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_vec_vec_u8), &payload.min_txn_cluster_hashes)
-            .unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_vec_u8), &payload.min_txn_sender).unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_vec_u8), &payload.min_txn_protocol).unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_u8), &payload.min_txn_tx_sub_type).unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_vec_u8), &payload.scc_data_hash).unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_vec_32), &payload.scc_pair).unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_vec_128), &payload.scc_prices).unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_vec_128), &payload.scc_timestamp).unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_vec_16), &payload.scc_decimals).unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_vec_u8), &payload.scc_qc).unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_u64), &payload.scc_round).unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_vec_u8), &payload.scc_id).unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_u64), &payload.scc_member_index).unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_u64), &payload.scc_committee_index).unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_u64), &payload.batch_idx).unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_u64), &payload.txn_idx).unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_u64), &payload.cluster_idx).unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_vec_u8), &payload.sig).unwrap(),
-        SuiJsonValue::from_bcs_bytes(Some(&vec_vec_bool), &payload.pair_mask).unwrap(),
+        SuiJsonValue::from_bcs_bytes(None, &payload.bytes_proof).unwrap(),
     ];
     let tx_data = sui_connector
         .client
@@ -153,19 +105,19 @@ impl SuiConnector {
     }
 
     pub fn get_sui_address(&self) -> Result<SuiAddress, ConnectorError> {
-        let key_pair =
-            SuiKeyPair::from_str(&self.secret_key).map_err(|_| ConnectorError::InvalidSecretKey)?;
+        let key_pair = SuiKeyPair::decode_base64(&self.secret_key)
+            .map_err(|_| ConnectorError::InvalidSecretKey)?;
         let sui_address: SuiAddress = (&key_pair.public()).into();
         Ok(sui_address)
     }
 
     fn get_key_store(&self) -> Result<InMemKeystore, ConnectorError> {
-        let key_pair =
-            SuiKeyPair::from_str(&self.secret_key).map_err(|_| ConnectorError::InvalidSecretKey)?;
+        let key_pair = SuiKeyPair::decode_base64(&self.secret_key)
+            .map_err(|_| ConnectorError::InvalidSecretKey)?;
 
         let mut key_store = InMemKeystore::default();
         key_store
-            .add_key(key_pair)
+            .add_key(None, key_pair)
             .map_err(|_| ConnectorError::InvalidSecretKey)?;
         Ok(key_store)
     }
@@ -180,8 +132,8 @@ impl SuiConnector {
             .sign_secure(&owner, &tx_data, Intent::sui_transaction())
             .map_err(|err| ConnectorError::SuiTransaction(err.to_string()))?;
 
-        let tx = Transaction::from_data(tx_data, Intent::sui_transaction(), vec![signature])
-            .verify()
+        let tx = Transaction::from_data(tx_data, vec![signature])
+            .verify(&VerifyParams::default())
             .unwrap();
         let transaction = self
             .client

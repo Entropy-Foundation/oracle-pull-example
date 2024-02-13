@@ -26,16 +26,9 @@ contract function on a blockchain network.
 Before using the library, configure the file in example folder:
 
 1. Set the gRPC server address:
-    
-    **Mainnets**
-
-    ```bash
-    let address = "grpcs://mainnet-dora.supraoracles.com".to_string();
-   ```
-
    **Testnets**
     ```bash
-    let address = "grpcs://testnet-dora.supraoracles.com".to_string();
+    let address = "grpcs://testnet-dora-2.supra.com".to_string();
    ```
 2. Set the pair indexes as an array:
     ```bash
@@ -73,40 +66,27 @@ following components:
 
 5. **Transaction Object**: Customize the transaction object as needed:
     ```bash
-    txb.moveCall({
-      target: `${contractAddress}::${moduleName}::${functionName}`,
-      arguments: [
-        txb.pure(response.dkg_object),
-        txb.pure(response.oracle_holder_object),
-        txb.pure(response.vote_smr_block_round, "vector<vector<u8>>"),
-        txb.pure(response.vote_smr_block_timestamp, "vector<vector<u8>>"),
-        txb.pure(response.vote_smr_block_author, "vector<vector<u8>>"),
-        txb.pure(response.vote_smr_block_qc_hash, "vector<vector<u8>>"),
-        txb.pure(response.vote_smr_block_batch_hashes, "vector<vector<u8>>"),
-        txb.pure(response.vote_round, "vector<u64>"),
-        txb.pure(response.min_batch_protocol, "vector<vector<u8>>"),
-        txb.pure(response.min_batch_txn_hashes, "vector<vector<vector<u8>>>"),
-        txb.pure(response.min_txn_cluster_hashes, "vector<vector<u8>>"),
-        txb.pure(response.min_txn_sender, "vector<vector<u8>>"),
-        txb.pure(response.min_txn_protocol, "vector<vector<u8>>"),
-        txb.pure(response.min_txn_tx_sub_type, "vector<u8>"),
-        txb.pure(response.scc_data_hash, "vector<vector<u8>>"),
-        txb.pure(response.scc_pair, "vector<vector<u32>>"),
-        txb.pure(response.scc_prices, "vector<vector<u128>>"),
-        txb.pure(response.scc_timestamp, "vector<vector<u128>>"),
-        txb.pure(response.scc_decimals, "vector<vector<u16>>"),
-        txb.pure(response.scc_qc, "vector<vector<u8>>"),
-        txb.pure(response.scc_round, "vector<u64>"),
-        txb.pure(response.scc_id, "vector<vector<u8>>"),
-        txb.pure(response.scc_member_index, "vector<u64>"),
-        txb.pure(response.scc_committee_index, "vector<u64>"),
-        txb.pure(response.batch_idx, "vector<u64>"),
-        txb.pure(response.txn_idx, "vector<u64>"),
-        txb.pure(response.cluster_idx, "vector<u32>"),
-        txb.pure(response.sig, "vector<vector<u8>>"),
-        txb.pure(response.pair_mask, "vector<vector<bool>>")
-      ]
-    });
+    let sui_arg = vec![
+        SuiJsonValue::from_str(&payload.dkg_object).unwrap(),
+        SuiJsonValue::from_str(&payload.oracle_holder_object).unwrap(),
+        SuiJsonValue::from_bcs_bytes(None, &payload.bytes_proof).unwrap(),
+    ];
+    let tx_data = sui_connector
+        .client
+        .with_sui(|sui_client| {
+            sui_client.transaction_builder().move_call(
+                sui_connector.get_sui_address().unwrap(),
+                ObjectID::from_hex_literal(&sui_connector.sc_addr).unwrap(),
+                MODULE,
+                ENTRY,
+                vec![],
+                sui_arg.clone(),
+                None,
+                sui_connector.gas_budget,
+            )
+        })
+        .await
+        .unwrap();
     ```
 
 # Running the Application

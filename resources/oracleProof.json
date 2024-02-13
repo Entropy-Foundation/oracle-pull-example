@@ -1,0 +1,28 @@
+[
+  {
+      "type": "tuple",
+      "name": "Oracle",
+      "components": [
+          {
+              "type": "tuple[]",
+              "name": "data",
+              "components": [
+                  {
+                      "type": "tuple",
+                      "name": "CommitteeFeed",
+                      "components": [
+                          { "type": "uint32", "name": "pair" },
+                          { "type": "uint128", "name": "price" },
+                          { "type": "uint64", "name": "timestamp" },
+                          { "type": "uint16", "name": "decimal" },
+                          { "type": "uint64", "name": "round" }
+                      ]
+                  }
+              ]
+          },
+          { "type": "uint256[2]", "name": "sigs" },
+          { "type": "bytes32[][]", "name": "proof" },
+          { "type": "bytes", "name": "root" }
+      ]
+  }
+]

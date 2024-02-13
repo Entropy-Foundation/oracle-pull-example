@@ -37,41 +37,25 @@ async function callContract(response) {
 
     /////////////////////////////////////////////////// Utility code to deserialise the oracle proof bytes (Optional) ///////////////////////////////////////////////////////////////////
 
-    const OracleProofABI = require("../../resources/oracleProof..json"); // Interface for the Oracle Proof data
-
-    const SignedCoherentClusterABI = require("../../resources/signedCoherentCluster.json");  // Interface for the Signed pair cluster data
+    const OracleProofABI = require("../../resources/oracleProof.json"); // Interface for the Oracle Proof data
 
     let proof_data = web3.eth.abi.decodeParameters(OracleProofABI,hex); // Deserialising the Oracle Proof data 
 
-    let clusters = proof_data[0].clustersRaw; // Fatching the raw bytes of the signed pair cluster data
-    let pairMask = proof_data[0].pairMask; // Fetching which pair ids is been requested
-    let pair = 0;  // Helps in iterating the vector of pair masking
     let pairId = []  // list of all the pair ids requested
-    let pairPrice = []; // list of prices for the corresponding pair ids  
+    let pairPrice = []; // list of prices for the corresponding pair ids
     let pairDecimal = []; // list of pair decimals for the corresponding pair ids
     let pairTimestamp = []; // list of pair last updated timestamp for the corresponding pair ids
 
+    for (let i = 0; i < proof_data[0].data.length; ++i) {
 
-    for (let i = 0; i < clusters.length; ++i) {
+        pairId.push(proof_data[0].data[i].CommitteeFeed.pair.toString(10)); // pushing the pair ids requested in the output vector
 
+        pairPrice.push(proof_data[0].data[i].CommitteeFeed.price.toString(10)); // pushing the pair price for the corresponding ids
 
-      let scc = web3.eth.abi.decodeParameters(SignedCoherentClusterABI,clusters[i]); // deserialising the raw bytes of the signed pair cluster data
-      
-      for (let j = 0; j < scc[0].cc.pair.length; ++j) {
-          pair += 1;
-          if (!pairMask[pair - 1]) { // verifying whether the pair is requested or not
-              continue;
-          }
-          pairId.push(scc[0].cc.pair[j].toString(10)); // pushing the pair ids requested in the output vector
+        pairDecimal.push(proof_data[0].data[i].CommitteeFeed.decimal.toString(10)); // pushing the pair decimals for the corresponding ids requested
 
-          pairPrice.push(scc[0].cc.prices[j].toString(10)); // pushing the pair price for the corresponding ids 
+        pairTimestamp.push(proof_data[0].data[i].CommitteeFeed.timestamp.toString(10)); // pushing the pair timestamp for the corresponding ids requested
 
-          pairDecimal.push(scc[0].cc.decimals[j].toString(10)); // pushing the pair decimals for the corresponding ids requested
-
-          pairTimestamp.push(scc[0].cc.timestamp[j].toString(10)); // pushing the pair timestamp for the corresponding ids requested
-
-
-      }
     }
 
     console.log("Pair index : ", pairId);

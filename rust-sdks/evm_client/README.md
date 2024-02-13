@@ -27,15 +27,9 @@ Before using the library, configure the file in example folder:
 
 1. Set the gRPC server address:
 
-    **Mainnets**
-
-    ```bash
-    let address = "grpcs://mainnet-dora.supraoracles.com".to_string();
-   ```
-
    **Testnets**
     ```bash
-    let address = "grpcs://testnet-dora.supraoracles.com".to_string();
+    let address = "grpcs://testnet-dora-2.supra.com".to_string();
    ```
 
 2. Set the pair indexes as an array:

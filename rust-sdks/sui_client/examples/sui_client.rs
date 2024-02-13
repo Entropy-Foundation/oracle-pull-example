@@ -10,7 +10,7 @@ async fn main() {
     // Create a PullRequest
     let request = pull_service::PullRequest {
         pair_indexes: vec![0, 21, 61, 49], // Set the pair indexes as an array
-        chain_type: "sui".to_string(),
+        chain_type: "sui".to_string(),     // Set the chain type (evm, sui, aptos, radix)
     };
 
     // Call the get_proof function and handle the result

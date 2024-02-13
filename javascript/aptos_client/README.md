@@ -27,7 +27,7 @@ Before using the library, make sure to set up the configuration in the main.js f
 1. Set the gRPC server address:
 
    ```bash
-   const address = 'testnet-dora.supraoracles.com';
+   const address = 'testnet-dora-2.supra.com';
    ```
 2. Set the pair indexes as an array:
 
