@@ -1,4 +1,4 @@
-# Javascript PullServiceClient for Aptos Readme
+# Javascript PullServiceClient for Radix Readme
 
 This library is designed to interact with a gRPC server for fetching proof data and then using that data to call a smart
 contract on a blockchain network. This readme provides instructions on how to use the library and customize certain
@@ -35,16 +35,17 @@ Before using the library, make sure to set up the configuration in the main.js f
    const pairIndexes = [0, 21, 61, 49];
    ```
 
-3. Set the chain type Aptos:
+3. Set the chain type evm:
 
    ```js
-   const chainType = 'aptos';
+   const chainType = 'radix';
    ```
 
-4. Configure the RPC URL for the desired blockchain network:
+4. Configure the Network Detail for the desired radix network eg: Stokenet:
 
    ```js
-   const provider = new aptos.Provider({ fullnodeUrl: "<RPC URL>" });
+    const GATEWAY_URL  = "https://stokenet.radixdlt.com";
+    const NETWORK_ID = 2;
    ```
 
 # Customization
@@ -52,31 +53,27 @@ Before using the library, make sure to set up the configuration in the main.js f
 Users can customize the smart contract interaction under the callContract function. Specifically, you can modify the
 following components:
 
-1. **Smart Contract Address**: Set the address of your smart contract:
+1. **Private Key**: Update <PRIVATE_KEY> with you hex encoded ed25519 secret key:
    ```js
-   const contractAddress = '<CONTRACT ADDRESS>';
+   const notaryPrivateKey = new PrivateKey.Ed25519(
+        "<PRIVATE_KEY>"
+   );
    ```
 
-2. **Function Call**: Modify the function call according to your smart contract's methods. For example, if your smart contract has a module named `pull_example` & method named `get_pair_price`:
-   ```js
-   const moduleName = "pull_example";
-   const functionName = "get_pair_price";
-   ```
+2. **Component Details**: Set your component address and function name along with parameters:
 
-3. **Retrieve signer Account**: 
-   ```bash
-   let account = new aptos.AptosAccount(aptos.HexString.ensure("<PRIVATE KEY>").toUint8Array(), walletAddress);
-   ```
-
-4. **Transaction Object**: Customize the transaction object as needed:
    ```js
-   const entryFunctionPayload = new aptos.TxnBuilderTypes.TransactionPayloadEntryFunction(
-       aptos.TxnBuilderTypes.EntryFunction.natural(
-          `${contractAddress}::${moduleName}`, functionName, [], [
-          OracleHolder,
-          aptos.BCS.bcsSerializeBytes(response.bytes_proof),
-       ]
-   ));
+   const manifest = new ManifestBuilder()
+        .callMethod(faucetComponentAddress, "lock_fee", [decimal(5000)])
+        .callMethod(
+            "<COMPONENT_ADDRESS>",
+            "<COMPONENT METHOD>",
+            [
+                blob(hash(hex_payload_bytes))
+            ]
+        )
+        .build();
+        manifest.blobs.push(response.proof_bytes);
    ```
 
 # Running the Application

@@ -41,7 +41,7 @@ Before using the library, configure the file in example folder:
    ```
 4. Set the RPC URL for the desired blockchain network:
     ```bash
-    “<--rpc-url-->”;
+    "<--rpc-url-->";
    ```
 
 # Customization
