@@ -5,12 +5,37 @@ use reqwest::Client;
 use crate::gateway::{GatewayStatus, TransactionStatus, TransactionSubmit};
 use crate::pull_service::PullResponseRadix;
 
+pub type PairIndex = u32;
+pub type PriceType = u128;
+pub type TimestampType = u64;
+pub type DecimalType = u16;
+pub type Round = u64;
+
+#[derive(ScryptoSbor, Debug, Clone, Eq, PartialEq)]
+pub struct PriceData {
+    pub pair_index: PairIndex,
+    pub price: PriceType,
+    pub timestamp: TimestampType,
+    pub decimal: DecimalType,
+    pub round: Round,
+}
+#[derive(ScryptoSbor, Debug, Clone, PartialEq, Eq)]
+pub struct CommitteeFeedWithProof {
+    pub committee_feed: PriceData,
+    pub proof: Vec<[u8; 32]>,
+}
+
+#[derive(ScryptoSbor, Debug, Clone, Eq, PartialEq)]
+pub struct PriceDetailsWithCommittee {
+    pub committee_id: u64,
+    pub root: Vec<u8>,
+    pub sig: Bls12381G2Signature,
+    pub committee_data: Vec<CommitteeFeedWithProof>,
+}
+
 #[derive(ScryptoSbor, Debug, Clone, Eq, PartialEq)]
 pub struct OracleProof {
-    pub array_items : Vec<(u32,u128,u64, u16, u64)>,
-    pub array_proof: Vec<Vec<[u8;32]>>,
-    pub root: Vec<u8>,
-    pub signature: Bls12381G2Signature
+    pub data: Vec<PriceDetailsWithCommittee>,
 }
 
 const GATEWAY_URL : &str = "https://stokenet.radixdlt.com";
