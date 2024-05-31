@@ -20,7 +20,7 @@ time = "0.3.34"
 reqwest = { version = "0.11.22", features = ["blocking", "json"] }
 serde_json = { version = "1.0.113", features = [] }
 serde = { version = "1.0.196", features = ["derive"] }
-tonic = { version = "0.10.2", features = [] }
+tonic = { version = "0.10.2", features = ["tls-roots","tls"] }
 
 [build-dependencies]
 tonic-build = "0.10.2"
