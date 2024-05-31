@@ -1,28 +1,63 @@
 [
-  {
+    {
       "type": "tuple",
-      "name": "Oracle",
+      "name": "OracleProofV2",
       "components": [
-          {
+        {
+          "type": "tuple[]",
+          "name": "data",
+          "components": [
+            {
+              "type": "uint64",
+              "name": "committee_id"
+            },
+            {
+              "type": "bytes32",
+              "name": "root"
+            },
+            {
+              "type": "uint256[2]",
+              "name": "sigs"
+            },
+            {
               "type": "tuple[]",
-              "name": "data",
+              "name": "committee_data",
               "components": [
-                  {
-                      "type": "tuple",
-                      "name": "CommitteeFeed",
-                      "components": [
-                          { "type": "uint32", "name": "pair" },
-                          { "type": "uint128", "name": "price" },
-                          { "type": "uint64", "name": "timestamp" },
-                          { "type": "uint16", "name": "decimal" },
-                          { "type": "uint64", "name": "round" }
-                      ]
-                  }
+                {
+                  "type": "tuple",
+                  "name": "committee_feed",
+                  "components": [
+                    {
+                      "type": "uint32",
+                      "name": "pair"
+                    },
+                    {
+                      "type": "uint128",
+                      "name": "price"
+                    },
+                    {
+                      "type": "uint64",
+                      "name": "timestamp"
+                    },
+                    {
+                      "type": "uint16",
+                      "name": "decimals"
+                    },
+                    {
+                      "type": "uint64",
+                      "name": "round"
+                    }
+                  ]
+                },
+                {
+                  "type": "bytes32[]",
+                  "name": "proof"
+                }
               ]
-          },
-          { "type": "uint256[2]", "name": "sigs" },
-          { "type": "bytes32[][]", "name": "proof" },
-          { "type": "bytes", "name": "root" }
+            }
+          ]
+        }
       ]
-  }
-]
+    }
+  ]
+  
