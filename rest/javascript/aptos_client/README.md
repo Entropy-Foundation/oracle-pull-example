@@ -1,6 +1,6 @@
 # Javascript PullServiceClient for Aptos Readme
 
-This library is designed to interact with a gRPC server for fetching proof data and then using that data to call a smart
+This library is designed to interact with a rest api server for fetching proof data and then using that data to call a smart
 contract on a blockchain network. This readme provides instructions on how to use the library and customize certain
 components for your specific use case.
 
@@ -27,7 +27,7 @@ Before using the library, make sure to set up the configuration in the main.js f
 1. Set the gRPC server address:
 
    ```js
-   const address = 'testnet-dora-2.supra.com';
+   const address = 'rpc-testnet-dora-2.supra.com';
    ```
 2. Set the pair indexes as an array:
 

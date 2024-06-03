@@ -68,7 +68,7 @@ pub async fn invoke_radix_chain(radix_response: PullResponseRadix) {
     let epoch = get_epoch(&client).await;
 
     let mut index_set = IndexSet::new();
-    index_set.insert(NonFungibleLocalId::from_str("{784a717810800dce-fdd332845dfa5dd8-e3d075a5253962eb-ea7ae519ee557dd3}").unwrap());
+    index_set.insert(NonFungibleLocalId::from_str("{<NONFUNGIBLE-RUID>}").unwrap());
 
     let manifest = ManifestBuilder::new()
         .lock_fee_from_faucet()

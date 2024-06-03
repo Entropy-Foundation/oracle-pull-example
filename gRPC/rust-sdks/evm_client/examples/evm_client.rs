@@ -4,7 +4,7 @@ use evm_pull_client::{pull_service, Client};
 
 #[tokio::main]
 async fn main() {
-    let address = "grpcs://testnet-dora.supraoracles.com".to_string(); // Set the gRPC server address
+    let address = "<GRPC SERVER ADDRESS>".to_string(); // Set the gRPC server address
     let mut client = Client::new(address).await.unwrap();
 
     // Create a PullRequest
@@ -16,8 +16,7 @@ async fn main() {
     // Call the get_proof function and handle the result
     match client.get_proof(&request).await {
         Ok(response) => {
-            println!("{:?}", &response);
-            // call_contract(response).await;
+            call_contract(response).await;
         }
         Err(status) => {
             eprint!("{:?}", status);

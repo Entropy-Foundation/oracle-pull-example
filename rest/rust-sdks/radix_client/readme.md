@@ -1,6 +1,6 @@
 # Rust PullServiceClient Readme
 
-The Rust PullServiceClient is designed to interact with a gRPC server for fetching proof data and using that data to
+The Rust PullServiceClient is designed to interact with a rest server for fetching proof data and using that data to
 call a smart contract on a blockchain network. This readme provides instructions on how to use the library and customize
 certain components for your specific use case.
 
@@ -17,18 +17,18 @@ To use the Rust library for Radix, Sui, Aptos or EVM follow these steps:
 
 # Usage
 
-The Rust library for Radix, Sui, Aptos or EVM provides a complete example that fetches proof data from a gRPC server and then calls a
+The Rust library for Radix, Sui, Aptos or EVM provides a complete example that fetches proof data from a rest api server and then calls a
 contract function on a blockchain network.
 
 # Configuration
 
 Before using the library, configure the file in example folder:
 
-1. Set the gRPC server address:
+1. Set the rest api server address:
 
    **Testnets**
     ```bash
-    let address = "grpcs://testnet-dora-2.supra.com".to_string();
+    let address = "https://rpc-testnet-dora-2.supra.com".to_string();
    ```
 
 2. Set the pair indexes as an array:
@@ -64,14 +64,20 @@ following components:
             .expect("Invalid component address");
    ```
 
-3. **Component Function Call**: Customize the function call based on your contract methods:
+3. **Non Fungible RUID**: Set the NFT RUID:
+    ```bash
+    let mut index_set = IndexSet::new();
+    index_set.insert(NonFungibleLocalId::from_str("{<NONFUNGIBLE-RUID>}").unwrap());
+   ```
+
+4. **Component Function Call**: Customize the function call based on your contract methods:
     ```bash
     let manifest = ManifestBuilder::new()
         .lock_fee_from_faucet()
         .call_method(
             DynamicGlobalAddress::from(component_address),
             "<COMPONENT METHOD>",
-            manifest_args!(oracle_proof_bytes),
+           manifest_args!(oracle_proof_bytes,index_set),
         )
         .build();
    ```
