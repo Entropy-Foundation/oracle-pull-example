@@ -2,7 +2,7 @@ const PullServiceClient = require("./pullServiceClient");
 const {Web3} = require('web3');
 
 async function main() {
-    const address = 'http://127.0.0.1:9000'; // Set the rest server address
+    const address = '<REST API SERVER ADDRESS>'; // Set the rest server address
     const pairIndexes = [0, 21]; // Set the pair indexes as an array
     const chainType = 'evm'; // Set the chain type (evm, sui, aptos, radix)
 
@@ -19,7 +19,7 @@ async function main() {
             callContract(response)
         })
         .catch(error => {
-            console.error('Error:', error.response.data);
+            console.error('Error:', error?.response?.data);
         });
 }
 
@@ -33,7 +33,7 @@ async function callContract(response) {
 
     const contract = new web3.eth.Contract(contractAbi, contractAddress);
 
-    const hex = web3.utils.bytesToHex(response.proof_bytes);
+    const hex = response.proof_bytes;
 
     /////////////////////////////////////////////////// Utility code to deserialise the oracle proof bytes (Optional) ///////////////////////////////////////////////////////////////////
 
@@ -48,13 +48,17 @@ async function callContract(response) {
 
     for (let i = 0; i < proof_data[0].data.length; ++i) {
 
-        pairId.push(proof_data[0].data[i].CommitteeFeed.pair.toString(10)); // pushing the pair ids requested in the output vector
+        for (let j = 0; j<proof_data[0].data[i].committee_data.length; j++) {
 
-        pairPrice.push(proof_data[0].data[i].CommitteeFeed.price.toString(10)); // pushing the pair price for the corresponding ids
+        pairId.push(proof_data[0].data[i].committee_data[j].committee_feed.pair.toString(10)); // pushing the pair ids requested in the output vector
 
-        pairDecimal.push(proof_data[0].data[i].CommitteeFeed.decimal.toString(10)); // pushing the pair decimals for the corresponding ids requested
+        pairPrice.push(proof_data[0].data[i].committee_data[j].committee_feed.price.toString(10)); // pushing the pair price for the corresponding ids
 
-        pairTimestamp.push(proof_data[0].data[i].CommitteeFeed.timestamp.toString(10)); // pushing the pair timestamp for the corresponding ids requested
+        pairDecimal.push(proof_data[0].data[i].committee_data[j].committee_feed.decimals.toString(10)); // pushing the pair decimals for the corresponding ids requested
+
+        pairTimestamp.push(proof_data[0].data[i].committee_data[j].committee_feed.timestamp.toString(10)); // pushing the pair timestamp for the corresponding ids requested
+
+        }
 
     }
 
@@ -65,9 +69,10 @@ async function callContract(response) {
 
 
     /////////////////////////////////////////////////// End of the utility code to deserialise the oracle proof bytes (Optional) ////////////////////////////////////////////////////////////////
+    let bytes = web3.utils.hexToBytes(hex);
     
-    const txData = contract.methods.GetPairPrice(hex, 0).encodeABI(); // function from you contract eg:GetPairPrice from example-contract.sol
-    const gasEstimate = await contract.methods.GetPairPrice(hex, 0).estimateGas({from: "<WALLET ADDRESS>"});
+    const txData = contract.methods.verifyOracleProof(bytes).encodeABI(); // function from you contract eg:GetPairPrice from example-contract.sol
+    const gasEstimate = await contract.methods.verifyOracleProof(bytes).estimateGas({from: "0x6829344713c9f8cac4A48b341C5FE7F39506d91B"});
 
     // Create the transaction object
     const transactionObject = {

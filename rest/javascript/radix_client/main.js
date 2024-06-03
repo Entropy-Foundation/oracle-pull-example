@@ -23,10 +23,13 @@ const {
     generateRandomNonce,
     blob,
     hash,
+    nonFungibleLocalId,
+    array,
+    ValueKind,
 } = require ("@radixdlt/radix-engine-toolkit");
 
 async function main() {
-    const address = 'http://127.0.0.1:9000'; // Set the rest server address
+    const address = '<REST API SERVER ADDRESS>'; // Set the rest server address
     const pairIndexes = [0, 21]; // Set the pair indexes as an array
     const chainType = 'radix'; // Set the chain type (evm, sui, aptos, radix)
 
@@ -43,7 +46,7 @@ async function main() {
             invokeRadixChain(response)
         })
         .catch(error => {
-            console.error('Error:', error.response.data);
+            console.error('Error:', error?.response?.data);
         });
 }
 
@@ -89,7 +92,7 @@ const invokeRadixChain = async (response) => {
         NetworkConfiguration.networkId
     ).then((addressBook) => addressBook.componentAddresses.faucet);
 
-    let hex_payload_bytes = Convert.HexString.toUint8Array(response.proof_bytes.toString("hex"));
+    let hex_payload_bytes = Convert.HexString.toUint8Array(response.proof_bytes);
 
     const manifest = new ManifestBuilder()
         .callMethod(faucetComponentAddress, "lock_fee", [decimal(5000)])
@@ -97,10 +100,12 @@ const invokeRadixChain = async (response) => {
             "<COMPONENT_ADDRESS>",
             "<COMPONENT METHOD>",
             [
-                blob(hash(hex_payload_bytes))]
+                blob(hash(hex_payload_bytes)),
+                array(ValueKind.NonFungibleLocalId,nonFungibleLocalId("{784a717810800dce-fdd332845dfa5dd8-e3d075a5253962eb-ea7ae519ee557dd3}"))
+            ]
         )
         .build();
-        manifest.blobs.push(response.proof_bytes);
+        manifest.blobs.push(hex_payload_bytes);
 
     // Generating Tx
     const currentEpoch = await getCurrentEpoch(statusApi);
