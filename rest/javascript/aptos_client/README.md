@@ -17,14 +17,14 @@ To use the PullServiceClient library, follow these steps:
 
 # Usage
 
-The library provides the main function, which fetches proof data from the gRPC server using the specified parameters and
+The library provides the main function, which fetches proof data from the rest api server using the specified parameters and
 then calls a contract function on a blockchain network.
 
 # Configuration
 
 Before using the library, make sure to set up the configuration in the main.js file:
 
-1. Set the gRPC server address:
+1. Set the rest api server address:
 
    ```js
    const address = 'rpc-testnet-dora-2.supra.com';
