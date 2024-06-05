@@ -101,7 +101,7 @@ const invokeRadixChain = async (response) => {
             "<COMPONENT METHOD>",
             [
                 blob(hash(hex_payload_bytes)),
-                array(ValueKind.NonFungibleLocalId,nonFungibleLocalId("{784a717810800dce-fdd332845dfa5dd8-e3d075a5253962eb-ea7ae519ee557dd3}"))
+                array(ValueKind.NonFungibleLocalId,nonFungibleLocalId("{<NONFUNGIBLE-RUID>}"))
             ]
         )
         .build();

@@ -60,7 +60,7 @@ following components:
    );
    ```
 
-2. **Component Details**: Set your component address and function name along with parameters:
+2. **Component Details**: Set your component address and function name along with parameters and NFT RUID:
 
    ```js
    const manifest = new ManifestBuilder()
@@ -70,6 +70,7 @@ following components:
             "<COMPONENT METHOD>",
             [
                 blob(hash(hex_payload_bytes))
+                array(ValueKind.NonFungibleLocalId,nonFungibleLocalId("{<NONFUNGIBLE-RUID>}"))
             ]
         )
         .build();
