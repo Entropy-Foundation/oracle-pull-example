@@ -23,6 +23,9 @@ const {
     generateRandomNonce,
     blob,
     hash,
+    nonFungibleLocalId,
+    array,
+    ValueKind,
 } = require ("@radixdlt/radix-engine-toolkit");
 
 async function main() {
@@ -97,7 +100,9 @@ const invokeRadixChain = async (response) => {
             "<COMPONENT_ADDRESS>",
             "<COMPONENT METHOD>",
             [
-                blob(hash(hex_payload_bytes))]
+                blob(hash(hex_payload_bytes)),
+                array(ValueKind.NonFungibleLocalId,nonFungibleLocalId("{<NONFUNGIBLE-RUID>}"))
+            ]
         )
         .build();
         manifest.blobs.push(response.proof_bytes);
