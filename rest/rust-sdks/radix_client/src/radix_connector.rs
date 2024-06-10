@@ -1,9 +1,9 @@
-use std::time::Duration;
-use transaction::prelude::*;
-use reqwest::{header::*};
-use reqwest::Client;
 use crate::gateway::{GatewayStatus, TransactionStatus, TransactionSubmit};
 use crate::types::PullResponseRadix;
+use reqwest::header::*;
+use reqwest::Client;
+use std::time::Duration;
+use transaction::prelude::*;
 
 pub type PairIndex = u32;
 pub type PriceType = u128;
@@ -38,11 +38,10 @@ pub struct OracleProof {
     pub data: Vec<PriceDetailsWithCommittee>,
 }
 
-const GATEWAY_URL : &str = "https://stokenet.radixdlt.com";
-const NETWORK_ID : u8 = 2;
+const GATEWAY_URL: &str = "https://stokenet.radixdlt.com";
+const NETWORK_ID: u8 = 2;
 const LOGICAL_NAME: &str = "stokenet";
 const HRP_SUFFIX: &str = "tdx_2_";
-
 
 pub async fn invoke_radix_chain(radix_response: PullResponseRadix) {
     // let oracle_proof_bytes : OracleProof = scrypto_decode(&radix_response.proof_bytes).unwrap();
@@ -75,12 +74,14 @@ pub async fn invoke_radix_chain(radix_response: PullResponseRadix) {
         .call_method(
             DynamicGlobalAddress::from(component_address),
             "<COMPONENT METHOD>",
-            manifest_args!(oracle_proof_bytes,index_set),
+            manifest_args!(oracle_proof_bytes, index_set),
         )
         .build();
 
-    let private_key = Ed25519PrivateKey::from_bytes(&hex::decode("<PRIVATE_KEY>").unwrap()).unwrap();
-    let public_address = ComponentAddress::virtual_account_from_public_key(&private_key.public_key());
+    let private_key =
+        Ed25519PrivateKey::from_bytes(&hex::decode("<PRIVATE_KEY>").unwrap()).unwrap();
+    let public_address =
+        ComponentAddress::virtual_account_from_public_key(&private_key.public_key());
 
     let public_address_string = public_address.to_string(&address_encoder);
 
@@ -90,7 +91,7 @@ pub async fn invoke_radix_chain(radix_response: PullResponseRadix) {
         .header(TransactionHeaderV1 {
             network_id: NETWORK_ID,
             start_epoch_inclusive: Epoch::of(epoch),
-            end_epoch_exclusive: Epoch::of(epoch+10),
+            end_epoch_exclusive: Epoch::of(epoch + 10),
             nonce: 3,
             notary_public_key: private_key.public_key().into(),
             notary_is_signatory: false,
@@ -122,21 +123,22 @@ pub async fn invoke_radix_chain(radix_response: PullResponseRadix) {
 }
 
 pub async fn get_epoch(client: &Client) -> u64 {
-    let resp =
-        client
+    let resp = client
         .post(format!("{}/status/gateway-status", GATEWAY_URL))
         .header(ACCEPT, "application/json")
         .header(CONTENT_TYPE, "application/json")
         .header(USER_AGENT, "oracle-pull-example")
-        .send().await.expect("Unable to get status");
-    
-    let body : GatewayStatus = resp.json().await.expect("Unable to parse json on status");
+        .send()
+        .await
+        .expect("Unable to get status");
+
+    let body: GatewayStatus = resp.json().await.expect("Unable to parse json on status");
     body.ledger_state.epoch
 }
 
 pub async fn transaction_status(client: &Client, intent_hash: &str) -> TransactionStatus {
     let mut map = HashMap::new();
-        map.insert("intent_hash", intent_hash);
+    map.insert("intent_hash", intent_hash);
 
     let resp = client
         .post(format!("{}/transaction/status", GATEWAY_URL))
@@ -154,13 +156,17 @@ pub async fn transaction_status(client: &Client, intent_hash: &str) -> Transacti
 pub async fn transaction_submit(client: &Client, tx_bytes_hex: String) -> TransactionSubmit {
     let mut map = HashMap::new();
     map.insert("notarized_transaction_hex", tx_bytes_hex);
-    let resp =
-          client.post(format!("{}/transaction/submit", GATEWAY_URL))
+    let resp = client
+        .post(format!("{}/transaction/submit", GATEWAY_URL))
         .header(ACCEPT, "application/json")
         .header(CONTENT_TYPE, "application/json")
         .header(USER_AGENT, "oracle-pull-example")
         .json(&map)
-        .send().await.expect("Unable to send the transaction");
+        .send()
+        .await
+        .expect("Unable to send the transaction");
 
-    resp.json().await.expect("Unable to parse tx submit response")
+    resp.json()
+        .await
+        .expect("Unable to parse tx submit response")
 }

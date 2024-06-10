@@ -13,8 +13,8 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 use std::{fmt::Display, future::Future};
 
-use tiny_keccak::{Hasher, Sha3};
 use crate::types::PullResponseAptos;
+use tiny_keccak::{Hasher, Sha3};
 
 const MODULE: &str = "<CONTRACT MODULE>"; // Module name of your contract. Ex. pull_example
 const ENTRY: &str = "<CONTRACT FUNCTION>"; // Module function name of your contract. Ex. get_pair_price

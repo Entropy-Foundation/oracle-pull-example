@@ -1,4 +1,5 @@
 use crate::errors::ConnectorError;
+use crate::types::PullResponseSui;
 use shared_crypto::intent::Intent;
 use std::str::FromStr;
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -14,7 +15,6 @@ use sui_types::crypto::EncodeDecodeBase64;
 use sui_types::crypto::SuiKeyPair;
 use sui_types::signature::VerifyParams;
 use sui_types::transaction::{Transaction, TransactionData};
-use crate::types::PullResponseSui;
 
 const MODULE: &str = "<CONTRACT MODULE>"; // Module name of your contract. Ex. pull_example
 const ENTRY: &str = "<CONTRACT FUNCTION>"; // Module function name of your contract. Ex. get_pair_price

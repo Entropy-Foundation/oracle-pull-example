@@ -13,7 +13,3 @@ pub struct PullResponseEvm {
     pub pair_indexes: Vec<u32>,
     pub proof_bytes: String,
 }
-
-
-
-

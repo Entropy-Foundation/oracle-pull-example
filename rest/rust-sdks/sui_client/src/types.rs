@@ -16,7 +16,3 @@ pub struct PullResponseSui {
     pub merkle_root_object: String,
     pub proof_bytes: String,
 }
-
-
-
-

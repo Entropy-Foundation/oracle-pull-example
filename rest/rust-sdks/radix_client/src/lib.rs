@@ -1,9 +1,9 @@
-use std::error::Error;
-use reqwest::Client as HttpClient;
 use crate::types::{PullRequest, PullResponseRadix};
+use reqwest::Client as HttpClient;
+use std::error::Error;
 
-pub mod radix_connector;
 mod gateway;
+pub mod radix_connector;
 pub mod types;
 
 pub struct Client {

@@ -2,8 +2,6 @@ use reqwest::{blocking, header::*};
 use serde::{Deserialize, Serialize};
 use transaction::prelude::*;
 
-
-
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct TransactionSubmit {
     pub duplicate: bool,
@@ -13,7 +11,7 @@ pub struct TransactionSubmit {
 pub struct GatewayApiClient {
     url: String,
     client: blocking::Client,
-  //  client: Client,
+    //  client: Client,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -129,7 +127,7 @@ impl GatewayApiClient {
     pub fn new(url: &str) -> Self {
         Self {
             url: url.to_string(),
-            client: blocking::Client::new()
+            client: blocking::Client::new(),
         }
     }
 
@@ -139,8 +137,10 @@ impl GatewayApiClient {
             .post(self.url.clone() + "/status/gateway-status")
             .header(ACCEPT, "application/json")
             .header(CONTENT_TYPE, "application/json")
-            .send().unwrap().text().unwrap();
-
+            .send()
+            .unwrap()
+            .text()
+            .unwrap();
 
         let status: GatewayStatus = serde_json::from_str(&resp).unwrap();
         status
@@ -196,6 +196,4 @@ impl GatewayApiClient {
         serde_json::from_str::<TransactionStatus>(&resp)
             .map_err(|_| serde_json::from_str::<TransactionError>(&resp).unwrap())
     }
-
-
 }

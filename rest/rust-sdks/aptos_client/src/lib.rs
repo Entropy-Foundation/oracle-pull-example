@@ -1,11 +1,11 @@
-pub mod types;
 pub mod aptos_connector;
 pub mod errors;
+pub mod types;
 
+use crate::types::PullResponseAptos;
 use reqwest::Client as HttpClient;
 use std::error::Error;
 use types::PullRequest;
-use crate::types::PullResponseAptos;
 
 pub struct Client {
     client: HttpClient,

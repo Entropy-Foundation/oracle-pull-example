@@ -1,4 +1,5 @@
 use crate::pull_contract::MockOracleClient;
+use crate::types::PullResponseEvm;
 use ethers::core::k256::FieldBytes;
 use ethers::{
     prelude::{k256::ecdsa::SigningKey, SignerMiddleware},
@@ -9,13 +10,12 @@ use ethers::{
 };
 use std::str::FromStr;
 use std::sync::Arc;
-use crate::types::PullResponseEvm;
 
 pub async fn invoke_eth_chain(evm: PullResponseEvm) {
     let rpc_url = "<RPC URL>"; // Rpc url for desired chain
     let secret_key = "<PRIVATE KEY>"; // Your Private Key
     let contract_address = "<CONTRACT ADDRESS>"; //Address of your smart contract
-    
+
     let http_provider = Provider::<Http>::try_from(rpc_url)
         .map_err(|_| eprint!("Invalid rpc url"))
         .unwrap();
@@ -47,5 +47,5 @@ pub async fn invoke_eth_chain(evm: PullResponseEvm) {
     let mut call = sc.verify_oracle_proof(bytes.into());
     call = call.legacy();
     let result = call.send().await.unwrap();
-    println!("{:?}",result.await);
+    println!("{:?}", result.await);
 }

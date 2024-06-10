@@ -1,6 +1,6 @@
 use radix_pull_client::radix_connector::invoke_radix_chain;
-use radix_pull_client::Client;
 use radix_pull_client::types::{PullRequest, PullResponseRadix};
+use radix_pull_client::Client;
 
 #[tokio::main]
 async fn main() {
@@ -9,8 +9,8 @@ async fn main() {
 
     // Create a PullRequest
     let request = PullRequest {
-        pair_indexes: vec![0, 21], // Set the pair indexes as an array
-        chain_type: "radix".to_string(),     // Set the chain type (evm, sui, aptos, radix)
+        pair_indexes: vec![0, 21],       // Set the pair indexes as an array
+        chain_type: "radix".to_string(), // Set the chain type (evm, sui, aptos, radix)
     };
 
     // Call the get_proof function and handle the result
@@ -25,5 +25,5 @@ async fn main() {
 }
 //
 async fn call_contract(input: PullResponseRadix) {
-        invoke_radix_chain(input).await
+    invoke_radix_chain(input).await
 }

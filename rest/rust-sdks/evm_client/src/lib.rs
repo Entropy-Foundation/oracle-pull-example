@@ -1,11 +1,11 @@
-pub mod types;
 pub mod ethereum_connector;
 pub mod pull_contract;
+pub mod types;
 
+use crate::types::PullResponseEvm;
 use reqwest::Client as HttpClient;
 use std::error::Error;
 use types::PullRequest;
-use crate::types::PullResponseEvm;
 
 pub struct Client {
     client: HttpClient,

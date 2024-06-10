@@ -1,11 +1,11 @@
-pub mod types;
-pub mod sui_connector;
 pub mod errors;
+pub mod sui_connector;
+pub mod types;
 
+use crate::types::PullResponseSui;
 use reqwest::Client as HttpClient;
 use std::error::Error;
 use types::PullRequest;
-use crate::types::PullResponseSui;
 
 pub struct Client {
     client: HttpClient,

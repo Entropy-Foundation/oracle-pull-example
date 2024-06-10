@@ -1,6 +1,6 @@
 use evm_pull_client::ethereum_connector::invoke_eth_chain;
-use evm_pull_client::Client;
 use evm_pull_client::types::PullRequest;
+use evm_pull_client::Client;
 
 #[tokio::main]
 async fn main() {
@@ -9,8 +9,8 @@ async fn main() {
 
     // Create a PullRequest
     let request = PullRequest {
-        pair_indexes: vec![0, 21], // Set the pair indexes as an array
-        chain_type: "evm".to_string(),     // Set the chain type (evm, sui, aptos)
+        pair_indexes: vec![0, 21],     // Set the pair indexes as an array
+        chain_type: "evm".to_string(), // Set the chain type (evm, sui, aptos)
     };
 
     // Call the get_proof function and handle the result

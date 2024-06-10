@@ -15,7 +15,3 @@ pub struct PullResponseAptos {
     pub oracle_holder_object: String,
     pub proof_bytes: String,
 }
-
-
-
-
