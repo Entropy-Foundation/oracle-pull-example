@@ -16,7 +16,6 @@ async fn main() {
     // Call the get_proof function and handle the result
     match client.get_proof(&request).await {
         Ok(response) => {
-            println!("{:?}", &response);
             call_contract(response).await;
         }
         Err(status) => {
