@@ -17,12 +17,15 @@ use sui_types::transaction::{Transaction, TransactionData};
 
 const MODULE: &str = "<CONTRACT MODULE>"; // Module name of your contract. Ex. pull_example
 const ENTRY: &str = "<CONTRACT FUNCTION>"; // Module function name of your contract. Ex. get_pair_price
+const CLOCK: &str = "0x6";
 
 pub async fn invoke_sui_chain(payload: PullResponseSui, sui_connector: SuiConnector) {
     let sui_arg = vec![
         SuiJsonValue::from_str(&payload.dkg_object).unwrap(),
         SuiJsonValue::from_str(&payload.oracle_holder_object).unwrap(),
-        SuiJsonValue::from_bcs_bytes(None, &payload.bytes_proof).unwrap(),
+        SuiJsonValue::from_str(&payload.merkle_root_object).unwrap(),
+        SuiJsonValue::from_str(CLOCK).unwrap(),
+        SuiJsonValue::from_bcs_bytes(None, &payload.proof_bytes).unwrap(),
     ];
     let tx_data = sui_connector
         .client

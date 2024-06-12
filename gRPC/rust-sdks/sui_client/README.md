@@ -69,7 +69,7 @@ following components:
     let sui_arg = vec![
         SuiJsonValue::from_str(&payload.dkg_object).unwrap(),
         SuiJsonValue::from_str(&payload.oracle_holder_object).unwrap(),
-        SuiJsonValue::from_bcs_bytes(None, &payload.bytes_proof).unwrap(),
+        SuiJsonValue::from_bcs_bytes(None, &payload.proof_bytes).unwrap(),
     ];
     let tx_data = sui_connector
         .client

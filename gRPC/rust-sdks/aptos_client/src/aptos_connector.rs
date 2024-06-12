@@ -33,7 +33,7 @@ pub async fn invoke_aptos_chain(payload: PullResponseAptos, aptos_connector: Apt
                 &AccountAddress::from_hex_literal(&payload.oracle_holder_object).unwrap(),
             )
             .unwrap(),
-            bcs::to_bytes(&payload.bytes_proof).unwrap(),
+            bcs::to_bytes(&payload.proof_bytes).unwrap(),
         ],
     ));
 

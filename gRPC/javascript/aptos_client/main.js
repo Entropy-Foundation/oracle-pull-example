@@ -39,7 +39,7 @@ async function callContract(response) {
         aptos.TxnBuilderTypes.EntryFunction.natural(
             `${contractAddress}::${moduleName}`, functionName, [], [
                 OracleHolder,
-                aptos.BCS.bcsSerializeBytes(response.bytes_proof),
+                aptos.BCS.bcsSerializeBytes(response.proof_bytes),
             ]
         ),
     );

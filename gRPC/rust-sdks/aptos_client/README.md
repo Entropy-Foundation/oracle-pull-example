@@ -76,7 +76,7 @@ following components:
                 &AccountAddress::from_hex_literal(&payload.oracle_holder_object).unwrap(),
             )
             .unwrap(),
-            bcs::to_bytes(&payload.bytes_proof).unwrap(),
+            bcs::to_bytes(&payload.proof_bytes).unwrap(),
         ],
     ));
     ```

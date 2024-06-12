@@ -6,9 +6,9 @@ const suiTx = require("@mysten/sui.js/transactions");
 const suiKeypair = require("@mysten/sui.js/keypairs/ed25519");
 const suiUtils = require("@mysten/sui.js/utils");
 
-const suiBsc = require("@mysten/sui.js/bcs");
-
 const PullServiceClient = require("./pullServiceClient");
+
+const CLOCK = "0x6";
 
 async function main() {
     const address = '<GRPC SERVER ADDRESS>'; // Set the gRPC server address
@@ -45,7 +45,9 @@ async function callContract(response) {
         arguments: [
             txb.object(response.dkg_object),
             txb.object(response.oracle_holder_object),
-            txb.pure(response.bytes_proof, "vector<u8>"),
+            txb.object(response.merkle_root_object),
+            txb.object(CLOCK),
+            txb.pure(response.proof_bytes, "vector<u8>"),
         ]
     });
 

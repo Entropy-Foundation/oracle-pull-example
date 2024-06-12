@@ -41,12 +41,13 @@ message PullResponseSui {
 
   string dkg_object = 2;
   string oracle_holder_object = 3;
-  bytes bytes_proof = 4;
+  string merkle_root_object = 4;
+  bytes proof_bytes = 5;
 }
 
 message PullResponseAptos {
   repeated uint32 pair_indexes = 1;
   string dkg_object = 2;
   string oracle_holder_object = 3;
-  bytes bytes_proof = 4;
+  bytes proof_bytes = 4;
 }

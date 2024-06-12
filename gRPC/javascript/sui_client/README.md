@@ -71,7 +71,7 @@ following components:
        arguments: [
            txb.pure(response.dkg_object),
            txb.pure(response.oracle_holder_object),
-           txb.pure(response.bytes_proof, "vector<u8>"),
+           txb.pure(response.proof_bytes, "vector<u8>"),
       ]
    });
    ```
