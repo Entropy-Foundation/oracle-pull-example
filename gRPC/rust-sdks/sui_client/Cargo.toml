@@ -13,10 +13,10 @@ thiserror = "1.0.38"
 log = "0.4.17"
 
 # sui
-sui-sdk = { git = "https://github.com/MystenLabs/sui.git", rev = "testnet-v1.18.0" }
-sui-types = { git = "https://github.com/MystenLabs/sui.git", rev = "testnet-v1.18.0" }
-shared-crypto = { git = "https://github.com/MystenLabs/sui.git", rev = "testnet-v1.18.0" }
-sui-keys = { git = "https://github.com/MystenLabs/sui.git", rev = "testnet-v1.18.0" }
+sui-sdk = { git = "https://github.com/MystenLabs/sui.git", rev = "testnet-v1.27.0" }
+sui-types = { git = "https://github.com/MystenLabs/sui.git", rev = "testnet-v1.27.0" }
+shared-crypto = { git = "https://github.com/MystenLabs/sui.git", rev = "testnet-v1.27.0" }
+sui-keys = { git = "https://github.com/MystenLabs/sui.git", rev = "testnet-v1.27.0" }
 serde_json = { version = "1.0" }
 
 [build-dependencies]

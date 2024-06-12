@@ -13,7 +13,6 @@ use sui_types::base_types::ObjectID;
 use sui_types::base_types::SuiAddress;
 use sui_types::crypto::EncodeDecodeBase64;
 use sui_types::crypto::SuiKeyPair;
-use sui_types::signature::VerifyParams;
 use sui_types::transaction::{Transaction, TransactionData};
 
 const MODULE: &str = "<CONTRACT MODULE>"; // Module name of your contract. Ex. pull_example
@@ -37,6 +36,7 @@ pub async fn invoke_sui_chain(payload: PullResponseSui, sui_connector: SuiConnec
                 sui_arg.clone(),
                 None,
                 sui_connector.gas_budget,
+                None,
             )
         })
         .await
@@ -132,9 +132,7 @@ impl SuiConnector {
             .sign_secure(&owner, &tx_data, Intent::sui_transaction())
             .map_err(|err| ConnectorError::SuiTransaction(err.to_string()))?;
 
-        let tx = Transaction::from_data(tx_data, vec![signature])
-            .verify(&VerifyParams::default())
-            .unwrap();
+        let tx = Transaction::from_data(tx_data, vec![signature]);
         let transaction = self
             .client
             .with_sui(|sui| {
