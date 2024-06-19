@@ -12,6 +12,6 @@
     "@grpc/grpc-js": "^1.9.0",
     "@grpc/proto-loader": "^0.7.8",
     "@radixdlt/radix-engine-toolkit": "^1.0.3",
-    "@radixdlt/babylon-gateway-api-sdk": "^1.1.1",
+    "@radixdlt/babylon-gateway-api-sdk": "^1.1.1"
   }
 }
