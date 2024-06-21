@@ -1,9 +1,10 @@
 use std::time::Duration;
-use transaction::prelude::*;
+use radix_transactions::prelude::*;
 use reqwest::{header::*};
 use reqwest::Client;
 use crate::gateway::{GatewayStatus, TransactionStatus, TransactionSubmit};
 use crate::pull_service::PullResponseRadix;
+use scrypto::prelude::*;
 
 pub type PairIndex = u32;
 pub type PriceType = u128;
@@ -67,12 +68,15 @@ pub async fn invoke_radix_chain(radix_response: PullResponseRadix) {
     let client = Client::new();
     let mut epoch = get_epoch(&client).await;
 
+    let mut index_set = IndexSet::new();
+    index_set.insert(NonFungibleLocalId::from_str("{<NONFUNGIBLE-RUID>}").unwrap());
+
     let manifest = ManifestBuilder::new()
         .lock_fee_from_faucet()
         .call_method(
             DynamicGlobalAddress::from(component_address),
             "<COMPONENT METHOD>",
-            manifest_args!(oracle_proof_bytes),
+            manifest_args!(oracle_proof_bytes,index_set),
         )
         .build();
 
