@@ -12,7 +12,7 @@ tokio = { version = "1.29.1", features = ["full"] }
 thiserror = "1.0.38"
 log = "0.4.17"
 hex = "0.4.3"
-cosmrs = { version = "0.15.0" , features = ["rpc", "cosmwasm"] }
+cosmrs = { version = "0.15.0" , features = ["rpc", "cosmwasm","grpc"] }
 serde_json = "1.0.113"
 bcs = "0.1.6"
 serde = { version = "1.0.189", default-features = false, features = ["derive"] }

@@ -1,30 +1,22 @@
 const { DirectSecp256k1HdWallet } = require('@cosmjs/proto-signing');
-const { SigningCosmWasmClient, fromBinary } = require('@cosmjs/cosmwasm-stargate');
+const { SigningCosmWasmClient } = require('@cosmjs/cosmwasm-stargate');
 const PullServiceClient = require("./pullServiceClient");
 async function getWallet(mnemonic) {
-    const wallet = await DirectSecp256k1HdWallet.fromMnemonic(
+    return await DirectSecp256k1HdWallet.fromMnemonic(
         mnemonic,
-        { prefix: 'osmo' }  // Use the appropriate prefix for your chain
+        {prefix: 'osmo'}  // Use the appropriate prefix for your chain
     );
-    return wallet;
 }
 async function getClient(wallet, rpcEndpoint) {
     const [firstAccount] = await wallet.getAccounts();
-    const client = await SigningCosmWasmClient.connectWithSigner(
+    return await SigningCosmWasmClient.connectWithSigner(
         rpcEndpoint,
         wallet
     );
-    return client;
-}
-
-async function queryContract(client, contractAddress, queryMsg) {
-    const result = await client.queryContractSmart(contractAddress, queryMsg);
-    return result;
 }
 
 async function executeContract(client, senderAddress, contractAddress, executeMsg, fee) {
-    const result = await client.execute(senderAddress, contractAddress, executeMsg, fee);
-    return result;
+    return await client.execute(senderAddress, contractAddress, executeMsg, fee);
 }
 
 async function main() {
