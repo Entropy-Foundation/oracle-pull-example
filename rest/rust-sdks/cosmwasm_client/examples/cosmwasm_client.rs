@@ -1,11 +1,11 @@
 use cosmwasm_pull_client::cosmwasm_connector::invoke_cosmwasm_chain;
 use cosmwasm_pull_client::types::PullRequest;
-use cosmwasm_pull_client::{pull_service, Client};
+use cosmwasm_pull_client::Client;
 
 #[tokio::main]
 async fn main() {
-    let address = "<GRPC_SERVER_ADDRESS>".to_string(); // Set the gRPC server address
-    let mut client = Client::new(address).await.unwrap();
+    let address = "<REST API SERVER ADDRESS>".to_string(); // Set the rest server address
+    let client = Client::new(address).await.unwrap();
 
     // Create a PullRequest
     let request = PullRequest {
@@ -16,16 +16,10 @@ async fn main() {
     // Call the get_proof function and handle the result
     match client.get_proof(&request).await {
         Ok(response) => {
-            // call_contract(response).await;
+            invoke_cosmwasm_chain(response).await;
         }
         Err(status) => {
             eprint!("{:?}", status);
         }
     }
 }
-
-// async fn call_contract(input: pull_service::PullResponse) {
-//     if let Some(Resp::Cosmwasm(cosmwasm_payload)) = input.resp {
-//         invoke_cosmwasm_chain(cosmwasm_payload).await
-//     }
-// }

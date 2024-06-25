@@ -3,7 +3,7 @@ const protoLoader = require('@grpc/proto-loader');
 
 class PullServiceClient {
   constructor(address) {
-    var PROTO_PATH = __dirname + '/../protos/client.proto';
+    var PROTO_PATH = __dirname + '/../../protos/client.proto';
     const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
       keepCase: true,
       longs: String,

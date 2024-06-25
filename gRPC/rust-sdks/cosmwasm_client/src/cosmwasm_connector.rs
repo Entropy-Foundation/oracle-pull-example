@@ -1,24 +1,18 @@
+use crate::errors::CosmWasmConnectorError;
 use crate::pull_service::PullResponseCosmWasm;
 use cosmrs::cosmwasm::MsgExecuteContract;
-use cosmrs::rpc::Client;
 use cosmrs::proto::cosmos::auth::v1beta1::query_client::QueryClient;
 use cosmrs::proto::cosmos::auth::v1beta1::{BaseAccount, QueryAccountRequest};
 use cosmrs::proto::traits::Message;
+use cosmrs::rpc::Client;
 use cosmrs::{
     crypto::secp256k1,
     rpc,
-    tx::{self, AccountNumber, Fee, Msg, SignDoc, SignerInfo},
+    tx::{self, Fee, Msg, SignDoc, SignerInfo},
     AccountId, Coin,
 };
 use serde_json::json;
 use std::str::FromStr;
-use thiserror::Error;
-
-#[derive(Debug, Error)]
-pub enum CosmWasmConnectorError {
-    #[error("invalid grpc response")]
-    InvalidGRPCResponse,
-}
 
 pub async fn invoke_cosmwasm_chain(cosmwasm: PullResponseCosmWasm) {
     const CHAIN_ID: &str = "osmo-test-5";
@@ -27,7 +21,8 @@ pub async fn invoke_cosmwasm_chain(cosmwasm: PullResponseCosmWasm) {
     const COIN_AMOUNT: u128 = 10000;
     const GAS_LIMIT: u64 = 900000;
 
-    let rpc_url = "<RPC URL>"; // Rpc url for desired chain "https://rpc.testnet.osmosis.zone:443"
+    let rpc_url = "<RPC URL>"; // Rpc url for desired chain
+    let grpc_url = "GRPC URL"; //Set the GRPC URL for the network
     let secret_key = "<PRIVATE KEY>"; // Your Private Key
     let contract_address = "<CONTRACT ADDRESS>"; // Address of your smart contract
 
@@ -38,7 +33,10 @@ pub async fn invoke_cosmwasm_chain(cosmwasm: PullResponseCosmWasm) {
     let sender_account_id = sender_public_key.account_id(ACCOUNT_PREFIX).unwrap();
     println!("osmosis account: {:?}", sender_account_id);
 
-    let (account_number,sequence_number) = collect_acc_sequence_number(rpc_url.to_string(),sender_account_id.clone());
+    let (account_number, sequence_number) =
+        collect_acc_sequence_number(grpc_url.to_string(), sender_account_id.clone())
+            .await
+            .unwrap();
 
     let rpc_client = rpc::client::HttpClient::new(rpc_url).unwrap();
     println!("{:?}", rpc_client.abci_info().await);
@@ -89,7 +87,7 @@ async fn collect_acc_sequence_number(
 ) -> Result<(u64, u64), CosmWasmConnectorError> {
     let grpc_url = grpc_url.clone();
     let end_point = tonic::transport::Endpoint::new(grpc_url).unwrap();
-    let mut grpc_client = QueryClient::connect(end_point).await?;
+    let mut grpc_client = QueryClient::connect(end_point).await.unwrap();
     let query = QueryAccountRequest {
         address: account_id.to_string(),
     };
@@ -97,7 +95,7 @@ async fn collect_acc_sequence_number(
     match grpc_client.account(query).await {
         Ok(resp) => {
             let resp_account = resp.into_inner().account.unwrap_or(Default::default());
-            let account = BaseAccount::decode(resp_account.value.as_slice())?;
+            let account = BaseAccount::decode(resp_account.value.as_slice()).unwrap();
             Ok((account.account_number, account.sequence))
         }
         Err(_) => Err(CosmWasmConnectorError::InvalidGRPCResponse),

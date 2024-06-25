@@ -8,7 +8,6 @@ async function getWallet(mnemonic) {
     );
 }
 async function getClient(wallet, rpcEndpoint) {
-    const [firstAccount] = await wallet.getAccounts();
     return await SigningCosmWasmClient.connectWithSigner(
         rpcEndpoint,
         wallet
@@ -20,7 +19,7 @@ async function executeContract(client, senderAddress, contractAddress, executeMs
 }
 
 async function main() {
-    const address = '<GRPC_SERVER_ADDRESS>'; // Set the gRPC server address
+    const address = '<REST_SERVER_ADDRESS>'; // Set the REST server address
     const pairIndexes = [0]; // Set the pair indexes as an array
     const chainType = 'cosmwasm'; // Set the chain type (evm, sui, aptos)
 
@@ -51,7 +50,7 @@ async function callContract(response) {
 
     const execute_msg = {
         verify_oracle_proof: {
-            bytes_proof : Array.from(response.proof_bytes)
+            bytes_proof : hexToBytes(response.proof_bytes)
         }
     };
 
@@ -60,6 +59,13 @@ async function callContract(response) {
     const execute_result = await executeContract(client,sender_address,contract_address,execute_msg,fee);
     console.log("Execute result:", execute_result);
 
+}
+
+function hexToBytes(hex) {
+    let bytes = [];
+    for (let c = 0; c < hex.length; c += 2)
+        bytes.push(parseInt(hex.substr(c, 2), 16));
+    return bytes;
 }
 
 main();

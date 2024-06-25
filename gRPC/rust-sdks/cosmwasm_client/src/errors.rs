@@ -1,5 +1,8 @@
 use thiserror::Error;
 
 #[allow(missing_docs)]
-#[derive(Error, Debug)]
-pub enum ConnectorError {}
+#[derive(Debug, Error)]
+pub enum CosmWasmConnectorError {
+    #[error("invalid grpc response")]
+    InvalidGRPCResponse,
+}

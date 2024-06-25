@@ -8,7 +8,6 @@ async function getWallet(mnemonic) {
     );
 }
 async function getClient(wallet, rpcEndpoint) {
-    const [firstAccount] = await wallet.getAccounts();
     return await SigningCosmWasmClient.connectWithSigner(
         rpcEndpoint,
         wallet
