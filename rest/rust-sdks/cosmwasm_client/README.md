@@ -45,7 +45,7 @@ Before using the library, configure the file in example folder:
    ```
 5. Set the GRPC URL for the desired blockchain network:
     ```bash
-    let grpc_url = "GRPC URL";
+    let grpc_url = "<GRPC URL>";
    ```
 
 # Customization

@@ -22,7 +22,7 @@ pub async fn invoke_cosmwasm_chain(cosmwasm: PullResponseCosmWasm) {
     const GAS_LIMIT: u64 = 900000;
 
     let rpc_url = "<RPC URL>"; // Rpc url for desired chain
-    let grpc_url = "GRPC URL"; //Set the GRPC URL for the network
+    let grpc_url = "<GRPC URL>"; //Set the GRPC URL for the network
     let secret_key = "<PRIVATE KEY>"; // Your Private Key
     let contract_address = "<CONTRACT ADDRESS>"; // Address of your smart contract
 
