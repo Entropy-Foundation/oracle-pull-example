@@ -4,7 +4,6 @@ use cosmrs::cosmwasm::MsgExecuteContract;
 use cosmrs::proto::cosmos::auth::v1beta1::query_client::QueryClient;
 use cosmrs::proto::cosmos::auth::v1beta1::{BaseAccount, QueryAccountRequest};
 use cosmrs::proto::traits::Message;
-use cosmrs::rpc::Client;
 use cosmrs::{
     crypto::secp256k1,
     rpc,
@@ -39,7 +38,6 @@ pub async fn invoke_cosmwasm_chain(cosmwasm: PullResponseCosmWasm) {
             .expect("Unable to fetch account and sequence number");
 
     let rpc_client = rpc::client::HttpClient::new(rpc_url).unwrap();
-    println!("{:?}", rpc_client.abci_info().await);
 
     let contract_account_id = AccountId::from_str(contract_address).unwrap();
     let execute_msg = json!({
