@@ -8,7 +8,7 @@ message PullResponse {
     PullResponseSui sui = 2;
     PullResponseAptos aptos = 3;
     PullResponseRadix radix = 4;
-    PullResponseAptos cosmwasm = 5;
+    PullResponseCosmWasm cosmwasm = 5;
   }
 }
 

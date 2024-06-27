@@ -1,0 +1,21 @@
+[package]
+name = "cosmwasm_pull_client"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tonic = { version = "0.10.2", features = ["tls", "tls-roots"]}
+tokio = { version = "1.29.1", features = ["full"] }
+thiserror = "1.0.38"
+log = "0.4.17"
+hex = "0.4.3"
+cosmrs = { version = "0.15.0" , features = ["rpc", "cosmwasm","grpc"] }
+serde_json = "1.0.113"
+bcs = "0.1.6"
+serde = { version = "1.0.189", default-features = false, features = ["derive"] }
+reqwest = { version = "0.11.27", features = ["blocking", "json"] }
+
+[[examples]]
+name = "cosmwasm_client"
