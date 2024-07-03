@@ -220,6 +220,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "cw-client-example"
+version = "0.1.0"
+dependencies = [
+ "anybuf",
+ "bcs",
+ "cosmwasm-schema",
+ "cosmwasm-std",
+ "cosmwasm-storage",
+ "cw-multi-test",
+ "cw-storage-plus 0.13.2",
+ "cw2",
+ "schemars",
+ "serde",
+ "serde_json",
+ "thiserror",
+]
+
+[[package]]
 name = "cw-multi-test"
 version = "0.13.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -258,24 +276,6 @@ dependencies = [
  "cosmwasm-std",
  "schemars",
  "serde",
-]
-
-[[package]]
-name = "cw-tpl-osmosis"
-version = "0.1.0"
-dependencies = [
- "anybuf",
- "bcs",
- "cosmwasm-schema",
- "cosmwasm-std",
- "cosmwasm-storage",
- "cw-multi-test",
- "cw-storage-plus 0.13.2",
- "cw2",
- "schemars",
- "serde",
- "serde_json",
- "thiserror",
 ]
 
 [[package]]

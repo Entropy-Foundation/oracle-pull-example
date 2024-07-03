@@ -14,8 +14,8 @@ pub enum ExecuteMsg {
 #[cw_serde]
 #[derive(QueryResponses)]
 pub enum QueryMsg {
-    /// GetCount returns the current count as a json-encoded number
-    #[returns(CountResponse)]
+    /// Get Supra Pull Contract address from the currently set address in storage
+    #[returns(ContractResponse)]
     GetSupraPullContract {},
     // Get price data from pair_id within own storage
     #[returns(PriceData)]
@@ -26,7 +26,7 @@ pub enum QueryMsg {
 
 // We define a custom struct for each query response
 #[cw_serde]
-pub struct CountResponse {
+pub struct ContractResponse {
     pub supra_pull_contract: String,
 }
 

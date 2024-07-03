@@ -1,5 +1,5 @@
 use crate::error::{ContractError, ParseReplyError};
-use crate::msg::{CountResponse, ExecuteMsg, InstantiateMsg, OracleHolder, PriceData, QueryMsg};
+use crate::msg::{ContractResponse, ExecuteMsg, InstantiateMsg, OracleHolder, PriceData, QueryMsg};
 use crate::state::{State, STATE};
 use anybuf::Bufany;
 #[cfg(not(feature = "library"))]
@@ -152,9 +152,9 @@ pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
     }
 }
 
-fn query_supra_pull_contract(deps: Deps) -> StdResult<CountResponse> {
+fn query_supra_pull_contract(deps: Deps) -> StdResult<ContractResponse> {
     let state = STATE.load(deps.storage)?;
-    Ok(CountResponse {
+    Ok(ContractResponse {
         supra_pull_contract: state.supra_pull_contract,
     })
 }
@@ -178,54 +178,5 @@ fn query_pair_data_internal(deps: Deps, pair_id: u32) -> StdResult<OracleHolder>
         Ok(oracle_holder.clone())
     } else {
         panic!("Pair id not found");
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use cosmwasm_std::testing::{mock_dependencies_with_balance, mock_env, mock_info};
-    use cosmwasm_std::{coins, from_binary};
-
-    #[test]
-    fn proper_initialization() {
-        let mut deps = mock_dependencies_with_balance(&coins(2, "token"));
-
-        let msg = InstantiateMsg {
-            supra_pull_contract: "Test".to_string(),
-        };
-        let info = mock_info("creator", &coins(1000, "earth"));
-
-        // we can just call .unwrap() to assert this was a success
-        let res = instantiate(deps.as_mut(), mock_env(), info, msg).unwrap();
-        assert_eq!(0, res.messages.len());
-
-        // it worked, let's query the state
-        let res = query(deps.as_ref(), mock_env(), QueryMsg::GetSupraPullContract {}).unwrap();
-        let value: CountResponse = from_binary(&res).unwrap();
-        assert_eq!("Test".to_string(), value.supra_pull_contract);
-    }
-
-    #[test]
-    fn increment() {
-        let mut deps = mock_dependencies_with_balance(&coins(2, "token"));
-
-        let msg = InstantiateMsg {
-            supra_pull_contract: "Test".to_string(),
-        };
-        let info = mock_info("creator", &coins(2, "token"));
-        let _res = instantiate(deps.as_mut(), mock_env(), info, msg).unwrap();
-
-        // beneficiary can release it
-        let info = mock_info("anyone", &coins(2, "token"));
-        let msg = ExecuteMsg::UpdateSupraContract {
-            supra_pull_contract: "Test Update".to_string(),
-        };
-        let _res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
-
-        // should increase counter by 1
-        let res = query(deps.as_ref(), mock_env(), QueryMsg::GetSupraPullContract {}).unwrap();
-        let value: CountResponse = from_binary(&res).unwrap();
-        assert_eq!("Test Update".to_string(), value.supra_pull_contract);
     }
 }

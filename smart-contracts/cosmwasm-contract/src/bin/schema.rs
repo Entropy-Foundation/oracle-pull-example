@@ -1,6 +1,6 @@
 use cosmwasm_schema::write_api;
 
-use cw_tpl_osmosis::msg::{ExecuteMsg, InstantiateMsg, QueryMsg};
+use cw_client_example::msg::{ExecuteMsg, InstantiateMsg, QueryMsg};
 
 fn main() {
     write_api! {
