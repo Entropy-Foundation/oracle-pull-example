@@ -86,7 +86,7 @@ async function callContract(response) {
     const signedTransaction = await web3.eth.accounts.signTransaction(transactionObject, "<PRIVATE KEY>");
 
     // Send the signed transaction
-    const receipt = await web3.eth.sendSignedTransaction(signedTransaction.rawTransaction);
+    const receipt = await web3.eth.sendSignedTransaction(signedTransaction.rawTransaction,null,{checkRevertBeforeSending:false});
     console.log('Transaction receipt:', receipt);
 }
 
