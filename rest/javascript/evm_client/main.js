@@ -72,7 +72,7 @@ async function callContract(response) {
     let bytes = web3.utils.hexToBytes(hex);
     
     const txData = contract.methods.verifyOracleProof(bytes).encodeABI(); // function from you contract eg:GetPairPrice from example-contract.sol
-    const gasEstimate = await contract.methods.verifyOracleProof(bytes).estimateGas({from: "0x6829344713c9f8cac4A48b341C5FE7F39506d91B"});
+    const gasEstimate = await contract.methods.verifyOracleProof(bytes).estimateGas({from: "<WALLET ADDRESS>"});
 
     // Create the transaction object
     const transactionObject = {
