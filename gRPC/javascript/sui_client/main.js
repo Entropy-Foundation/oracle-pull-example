@@ -47,7 +47,7 @@ async function callContract(response) {
             txb.object(response.oracle_holder_object),
             txb.object(response.merkle_root_object),
             txb.object(CLOCK),
-            txb.pure(response.proof_bytes, "vector<u8>"),
+            txb.pure(Array.from(response.proof_bytes), "vector<u8>"),
         ]
     });
 

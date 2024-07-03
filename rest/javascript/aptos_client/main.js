@@ -1,5 +1,5 @@
 const aptos = require("aptos");
-const provider = new aptos.Provider(aptos.Network.DEVNET);
+const provider = new aptos.Provider(aptos.Network.TESTNET);
 const PullServiceClient = require("./pullServiceClient");
 
 async function main() {

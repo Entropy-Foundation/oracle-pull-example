@@ -41,7 +41,6 @@ async function callContract(response) {
     let txb = new suiTx.TransactionBlock();
 
     let buffer = Buffer.from(response.proof_bytes, 'hex');
-    let bytes = Array.from(buffer);
 
     txb.moveCall({
         target: `${contractAddress}::${moduleName}::${functionName}`,
@@ -50,7 +49,7 @@ async function callContract(response) {
             txb.object(response.oracle_holder_object),
             txb.object(response.merkle_root_object),
             txb.object(CLOCK),
-            txb.pure(bytes, "vector<u8>"),
+            txb.pure(Array.from(buffer), "vector<u8>"),
         ]
     });
 
