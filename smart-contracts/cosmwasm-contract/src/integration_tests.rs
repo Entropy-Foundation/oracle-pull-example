@@ -107,7 +107,7 @@ mod tests {
         };
         let _res = execute(deps.as_mut(), mock_env(), info, msg).unwrap();
 
-        // should increase counter by 1
+        // Receive the response and unwrap() to fetch the supra oracle pull contract
         let res = query(deps.as_ref(), mock_env(), QueryMsg::GetSupraPullContract {}).unwrap();
         let value: ContractResponse = from_json(&res).unwrap();
         assert_eq!("Test Update".to_string(), value.supra_pull_contract);
