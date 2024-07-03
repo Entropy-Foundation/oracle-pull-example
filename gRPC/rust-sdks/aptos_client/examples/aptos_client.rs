@@ -4,7 +4,7 @@ use aptos_pull_client::{pull_service, Client};
 
 #[tokio::main]
 async fn main() {
-    let address = "<GRPC SERVER ADDRESS>".to_string(); // Set the gRPC server address
+    let address = "https://testnet-dora-2.supra.com:443".to_string(); // Set the gRPC server address
     let mut client = Client::new(address).await.unwrap();
 
     // Create a PullRequest
