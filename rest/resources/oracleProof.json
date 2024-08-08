@@ -20,11 +20,11 @@
               "name": "sigs"
             },
             {
-              "type": "tuple[]",
+              "type": "tuple",
               "name": "committee_data",
               "components": [
                 {
-                  "type": "tuple",
+                  "type": "tuple[]",
                   "name": "committee_feed",
                   "components": [
                     {
@@ -52,6 +52,10 @@
                 {
                   "type": "bytes32[]",
                   "name": "proof"
+                },
+                {
+                  "type": "bool[]",
+                  "name": "flags"
                 }
               ]
             }

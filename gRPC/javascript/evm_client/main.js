@@ -47,16 +47,16 @@ async function callContract(response) {
     let pairTimestamp = []; // list of pair last updated timestamp for the corresponding pair ids
 
     for (let i = 0; i < proof_data[0].data.length; ++i) {
+        
+        for (let j = 0; j<proof_data[0].data[i].committee_data.committee_feed.length; j++) {
 
-        for (let j = 0; j<proof_data[0].data[i].committee_data.length; j++) {
+        pairId.push(proof_data[0].data[i].committee_data.committee_feed[j].pair.toString(10)); // pushing the pair ids requested in the output vector
 
-        pairId.push(proof_data[0].data[i].committee_data[j].committee_feed.pair.toString(10)); // pushing the pair ids requested in the output vector
+        pairPrice.push(proof_data[0].data[i].committee_data.committee_feed[j].price.toString(10)); // pushing the pair price for the corresponding ids
 
-        pairPrice.push(proof_data[0].data[i].committee_data[j].committee_feed.price.toString(10)); // pushing the pair price for the corresponding ids
+        pairDecimal.push(proof_data[0].data[i].committee_data.committee_feed[j].decimals.toString(10)); // pushing the pair decimals for the corresponding ids requested
 
-        pairDecimal.push(proof_data[0].data[i].committee_data[j].committee_feed.decimals.toString(10)); // pushing the pair decimals for the corresponding ids requested
-
-        pairTimestamp.push(proof_data[0].data[i].committee_data[j].committee_feed.timestamp.toString(10)); // pushing the pair timestamp for the corresponding ids requested
+        pairTimestamp.push(proof_data[0].data[i].committee_data.committee_feed[j].timestamp.toString(10)); // pushing the pair timestamp for the corresponding ids requested
 
         }
 
