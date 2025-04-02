@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package pull_service;
+
+message PullResponse {
+  oneof resp {
+    PullResponseEvm evm = 1;
+    PullResponseSui sui = 2;
+    PullResponseAptos aptos = 3;
+    PullResponseRadix radix = 4;
+    PullResponseCosmWasm cosmwasm = 5;
+  }
+}
+
+service PullService {
+  rpc GetProof(PullRequest) returns (PullResponse);
+}
+
+message PullRequest {
+  repeated uint32 pair_indexes = 1;
+  string chain_type = 2;
+}
+
+message PullResponseEvm {
+  repeated uint32 pair_indexes = 1;
+  bytes proof_bytes = 2;
+}
+
+message PullResponseRadix {
+  repeated uint32 pair_indexes = 1;
+  bytes proof_bytes = 2;
+}
+
+message PullResponseCosmWasm {
+  repeated uint32 pair_indexes = 1;
+  bytes proof_bytes = 2;
+}
+
+message PullResponseSui {
+  repeated uint32 pair_indexes = 1;
+
+  string dkg_object = 2;
+  string oracle_holder_object = 3;
+  string merkle_root_object = 4;
+  bytes proof_bytes = 5;
+}
+
+message PullResponseAptos {
+  repeated uint32 pair_indexes = 1;
+  string dkg_object = 2;
+  string oracle_holder_object = 3;
+  bytes proof_bytes = 4;
+}

@@ -1,0 +1,22 @@
+[package]
+name = "evm_pull_client"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tokio = { version = "1.29.1", features = ["full"] }
+thiserror = "1.0.38"
+log = "0.4.17"
+hex = { version = "0.4.3" }
+
+# evm
+ethers = { version = "2.0.8"}
+reqwest = "0.11.27"
+serde = { version = "1.0.203", features = ["derive"] }
+
+
+[[examples]]
+name = "evm_client"
+
