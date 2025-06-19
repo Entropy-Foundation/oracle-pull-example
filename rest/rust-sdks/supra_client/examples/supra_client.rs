@@ -4,6 +4,7 @@ use supra_pull_client::Client;
 
 #[tokio::main]
 async fn main() {
+    env_logger::init();
     let address = "<REST API SERVER ADDRESS>".to_string(); // Set the rest server address
     let client = Client::new(address).await.unwrap();
 

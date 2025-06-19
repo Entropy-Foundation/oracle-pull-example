@@ -1,0 +1,5 @@
+[build]
+rustflags = [
+    "--cfg",
+    "tokio_unstable", # because usage of `disable_lifo_slot` api
+]
