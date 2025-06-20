@@ -1,4 +1,4 @@
-import {SupraClient, SupraAccount, BCS} from "supra-l1-sdk";
+import { SupraClient, SupraAccount, BCS } from "supra-l1-sdk";
 import PullServiceClient from "./pullServiceClient.js";
 
 let supra_client = await SupraClient.init("<RPC ENDPOINT>");
@@ -21,7 +21,7 @@ async function main() {
             callContract(response)
         })
         .catch(error => {
-            console.error('Error:', error?.response?.data);
+            console.error('Error:', error ? .response ? .data);
         });
 }
 
@@ -38,22 +38,16 @@ async function callContract(response) {
     console.log("Account address:", account.address());
 
     let supraRawTransaction = await supra_client.createRawTxObject(
-    account.address(),
-    (
-      await supra_client.getAccountInfo(account.address())
-    ).sequence_number,
-    contractAddress,
-    moduleName,
-    functionName,
-    [],
-    [
-        BCS.bcsSerializeBytes(response.proof_bytes)
-    ]
-  );
-
-    const txn_request = await SupraClient.createSignedTransaction(account, supraRawTransaction);
-    const result = SupraClient.deriveTransactionHash(txn_request);
-    console.log("Transaction hash: ", result);
+        account.address(),
+        (
+            await supra_client.getAccountInfo(account.address())
+        ).sequence_number,
+        contractAddress,
+        moduleName,
+        functionName, [], [
+            BCS.bcsSerializeBytes(response.proof_bytes)
+        ]
+    );
 
     let supraTransferRawTransactionSerializer = new BCS.Serializer();
     supraRawTransaction.serialize(
@@ -62,12 +56,11 @@ async function callContract(response) {
     console.log(
         await supra_client.sendTxUsingSerializedRawTransaction(
             account,
-            supraTransferRawTransactionSerializer.getBytes(),
-            {
+            supraTransferRawTransactionSerializer.getBytes(), {
                 enableWaitForTransaction: true,
                 enableTransactionSimulation: true,
             }
-            )
+        )
     );
 }
 
