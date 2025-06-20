@@ -27,7 +27,7 @@ Before using the library, make sure to set up the configuration in the main.js f
 1. Set the rest api server address:
 
    ```js
-   const address = 'rpc-testnet-dora-2.supra.com';
+   const address = 'https://rpc-testnet-dora-2.supra.com/';
    ```
 2. Set the pair indexes as an array:
 
