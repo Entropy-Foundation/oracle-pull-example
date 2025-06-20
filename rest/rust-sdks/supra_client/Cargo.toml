@@ -1,0 +1,26 @@
+[package]
+name = "supra_pull_client"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1.29.1", features = ["full"] }
+thiserror = "1.0.38"
+log = "0.4.17"
+hex = { version = "0.4.3" }
+serde = { version = "1.0.203", features = ["derive"] }
+
+reqwest = { version = "0.11.11" }
+tiny-keccak = { version = "2.0.2", default-features = false, features = ["sha3"] }
+ed25519-dalek = { version = "1.0.1", features = ["batch"] }
+bcs = { version = "0.1.5" }
+aptos-types = { git = "https://github.com/Entropy-Foundation/aptos-core.git", rev = "c1229e4bfd216614c91c70f648f39401dbac0fe0" }
+aptos = { git = "https://github.com/Entropy-Foundation/aptos-core.git", rev = "c1229e4bfd216614c91c70f648f39401dbac0fe0" }
+aptos-sdk = { git = "https://github.com/Entropy-Foundation/aptos-core.git", rev = "c1229e4bfd216614c91c70f648f39401dbac0fe0" }
+sha3 = "0.9.1"
+url = "2.5.4"
+env_logger = "0.11.8"
+
+
+[[examples]]
+name = "supra_client"

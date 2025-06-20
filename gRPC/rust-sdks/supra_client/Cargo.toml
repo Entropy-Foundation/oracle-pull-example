@@ -1,0 +1,33 @@
+[package]
+name = "supra_pull_client"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tonic = { version = "0.10.2", features = ["tls", "tls-roots"]}
+prost = "0.12.1"
+tokio = { version = "1.29.1", features = ["full"] }
+thiserror = "1.0.38"
+log = "0.4.17"
+hex = { version = "0.4.3" }
+
+# aptos
+reqwest = { version = "0.11.11" }
+tiny-keccak = { version = "2.0.2", default-features = false, features = ["sha3"] }
+ed25519-dalek = { version = "1.0.1", features = ["batch"] }
+bcs = { version = "0.1.5" }
+url = "2.5.4"
+sha3 = "0.9.1"
+aptos-types = { git = "https://github.com/Entropy-Foundation/aptos-core.git", rev = "c1229e4bfd216614c91c70f648f39401dbac0fe0" }
+aptos = { git = "https://github.com/Entropy-Foundation/aptos-core.git", rev = "c1229e4bfd216614c91c70f648f39401dbac0fe0" }
+aptos-sdk = { git = "https://github.com/Entropy-Foundation/aptos-core.git", rev = "c1229e4bfd216614c91c70f648f39401dbac0fe0" }
+serde = { version = "1.0.219", features = ["derive"] }
+env_logger = "0.11.8"
+
+[build-dependencies]
+tonic-build = "0.10.2"
+
+[[examples]]
+name = "supra_client"

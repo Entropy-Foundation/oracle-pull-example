@@ -1,6 +1,6 @@
 # Rust PullServiceClient Readme
 
-The Rust PullServiceClient is designed to interact with a gRPC server for fetching proof data and using that data to
+The Rust PullServiceClient is designed to interact with a rest api server for fetching proof data and using that data to
 call a smart contract on a blockchain network. This readme provides instructions on how to use the library and customize
 certain components for your specific use case.
 
@@ -11,25 +11,25 @@ certain components for your specific use case.
 
 # Installation
 
-To use the Rust library for Sui, Aptos and evm follow these steps:
+To use the Rust library for Sui, Aptos, Supra and evm follow these steps:
 
 1. Clone the repository or download the library's source code.
 2. Navigate to the project directory in your terminal
 
 # Usage
 
-The Rust library for Sui, Aptos and evm provides a complete example that fetches proof data from a gRPC server and then calls a
+The Rust library for Sui, Aptos, Supra and evm provides a complete example that fetches proof data from a rest api server and then calls a
 contract function on a blockchain network.
 
 # Configuration
 
 Before using the library, configure the file in example folder:
 
-1. Set the gRPC server address:
+1. Set the rest api server address:
     
    **Testnets**
     ```bash
-    let address = "https://testnet-dora-2.supra.com:443".to_string();
+    let address = "https://rpc-testnet-dora-2.supra.com".to_string();
    ```
 2. Set the pair indexes as an array:
     ```bash
@@ -65,19 +65,13 @@ following components:
     const ENTRY: &str = "<CONTRACT FUNCTION>";
    ```
 
-5. **Transaction Object**: Customize the transaction object as needed:
+4. **Transaction Object**: Customize the transaction object as needed:
     ```bash
-    let aptos_arg = TransactionPayload::EntryFunction(EntryFunction::new(
+    let tx_args = TransactionPayload::EntryFunction(EntryFunction::new(
         ModuleId::new(address, Identifier::new(MODULE).unwrap()),
         Identifier::new(ENTRY).unwrap(),
         vec![],
-        vec![
-            bcs::to_bytes(
-                &AccountAddress::from_hex_literal(&payload.oracle_holder_object).unwrap(),
-            )
-            .unwrap(),
-            bcs::to_bytes(&payload.proof_bytes).unwrap(),
-        ],
+        vec![bcs::to_bytes(&bytes).unwrap()],
     ));
     ```
 
@@ -87,8 +81,7 @@ Open your terminal and navigate to the project directory.
 
 Run the example using the following command:
 
-**Aptos**
 
 ```bash
-cargo run --example aptos_client
+cargo run --example supra_client
 ```

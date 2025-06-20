@@ -11,14 +11,14 @@ certain components for your specific use case.
 
 # Installation
 
-To use the Rust library for Sui, Aptos and evm follow these steps:
+To use the Rust library for Sui, Aptos, Supra and evm follow these steps:
 
 1. Clone the repository or download the library's source code.
 2. Navigate to the project directory in your terminal
 
 # Usage
 
-The Rust library for Sui, Aptos and evm provides a complete example that fetches proof data from a gRPC server and then calls a
+The Rust library for Sui, Aptos, Supra and evm provides a complete example that fetches proof data from a gRPC server and then calls a
 contract function on a blockchain network.
 
 # Configuration
@@ -67,17 +67,11 @@ following components:
 
 5. **Transaction Object**: Customize the transaction object as needed:
     ```bash
-    let aptos_arg = TransactionPayload::EntryFunction(EntryFunction::new(
+        let tx_args = TransactionPayload::EntryFunction(EntryFunction::new(
         ModuleId::new(address, Identifier::new(MODULE).unwrap()),
         Identifier::new(ENTRY).unwrap(),
         vec![],
-        vec![
-            bcs::to_bytes(
-                &AccountAddress::from_hex_literal(&payload.oracle_holder_object).unwrap(),
-            )
-            .unwrap(),
-            bcs::to_bytes(&payload.proof_bytes).unwrap(),
-        ],
+        vec![bcs::to_bytes(&bytes).unwrap()],
     ));
     ```
 
@@ -87,8 +81,6 @@ Open your terminal and navigate to the project directory.
 
 Run the example using the following command:
 
-**Aptos**
-
 ```bash
-cargo run --example aptos_client
+cargo run --example supra_client
 ```
