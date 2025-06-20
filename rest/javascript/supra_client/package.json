@@ -1,0 +1,16 @@
+{
+    "name": "pull_service_client",
+    "version": "1.0.0",
+    "description": "I've created a JavaScript library that streamlines RPC requests to acquire Oracle proofs. These Oracle proofs are then put to use within the main.js file, where an illustrative example showcases how to integrate them. Users have the flexibility to customize the callContract function in the main.js file according to their specific needs.",
+    "type": "module",
+    "main": "main.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "axios": "^1.10.0",
+        "supra-l1-sdk": "^4.3.3"
+    }
+}

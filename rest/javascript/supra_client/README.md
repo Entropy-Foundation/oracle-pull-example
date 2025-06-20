@@ -1,4 +1,4 @@
-# Javascript PullServiceClient for Aptos Readme
+# Javascript PullServiceClient for Supra Readme
 
 This library is designed to interact with a rest api server for fetching proof data and then using that data to call a smart
 contract on a blockchain network. This readme provides instructions on how to use the library and customize certain
@@ -44,7 +44,7 @@ Before using the library, make sure to set up the configuration in the main.js f
 4. Configure the RPC URL for the desired blockchain network:
 
    ```js
-   const provider = new aptos.Provider({ fullnodeUrl: "<RPC URL>" });
+   let supra_client = await SupraClient.init("<RPC ENDPOINT>");
    ```
 
 # Customization
@@ -65,18 +65,25 @@ following components:
 
 3. **Retrieve signer Account**: 
    ```bash
-   let account = new aptos.AptosAccount(aptos.HexString.ensure("<PRIVATE KEY>").toUint8Array(), walletAddress);
+   const priv_key_bytes = Uint8Array.from(Buffer.from(privateKey, "hex"));
+   const account = new SupraAccount(priv_key_bytes);
    ```
 
 4. **Transaction Object**: Customize the transaction object as needed:
    ```js
-   const entryFunctionPayload = new aptos.TxnBuilderTypes.TransactionPayloadEntryFunction(
-       aptos.TxnBuilderTypes.EntryFunction.natural(
-          `${contractAddress}::${moduleName}`, functionName, [], [
-          OracleHolder,
-          aptos.BCS.bcsSerializeBytes(response.proof_bytes),
-       ]
-   ));
+   let supraRawTransaction = await supra_client.createRawTxObject(
+    account.address(),
+    (
+      await supra_client.getAccountInfo(account.address())
+    ).sequence_number,
+    contractAddress,
+    moduleName,
+    functionName,
+    [],
+    [
+        BCS.bcsSerializeBytes(response.proof_bytes)
+    ]
+   );
    ```
 
 # Running the Application
