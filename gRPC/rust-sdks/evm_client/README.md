@@ -29,7 +29,7 @@ Before using the library, configure the file in example folder:
 
    **Testnets**
     ```bash
-    let address = "grpcs://testnet-dora-2.supra.com".to_string();
+    let address = "https://testnet-dora-2.supra.com:443".to_string();
    ```
 
 2. Set the pair indexes as an array:
